@@ -14,10 +14,10 @@ dependency or two.
 [![GitHub license](https://img.shields.io/github/license/dotkernel/dot-dependency-injection)](https://github.com/dotkernel/dot-dependency-injection/blob/1.0/LICENSE.md)
 
 [![Build Static](https://github.com/dotkernel/dot-dependency-injection/actions/workflows/continuous-integration.yml/badge.svg?branch=1.0)](https://github.com/dotkernel/dot-dependency-injection/actions/workflows/continuous-integration.yml)
-[![codecov](https://codecov.io/gh/dotkernel/dot-dependency-injection/graph/badge.svg?token=UqlZXPg2xq)](https://codecov.io/gh/dotkernel/dot-dependency-injection)
+[![codecov](https://codecov.io/gh/dotkernel/dot-dependency-injection/graph/badge.svg?token=DayAoD2Oj6)](https://codecov.io/gh/dotkernel/dot-dependency-injection)
 [![docs-build](https://github.com/dotkernel/dot-dependency-injection/actions/workflows/docs-build.yml/badge.svg)](https://github.com/dotkernel/dot-dependency-injection/actions/workflows/docs-build.yml)
 
-[![SymfonyInsight](https://insight.symfony.com/projects/e5c80c2e-6773-48db-a0f0-4299f2857d53/big.svg)](https://insight.symfony.com/projects/e5c80c2e-6773-48db-a0f0-4299f2857d53)
+[![SymfonyInsight](https://insight.symfony.com/projects/d434b0aa-1f35-4f98-8356-a902f312ba5c/big.svg)](https://insight.symfony.com/projects/d434b0aa-1f35-4f98-8356-a902f312ba5c)
 
 ## Installation
 
