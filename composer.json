@@ -1,0 +1,63 @@
+{
+    "name": "dotkernel/dot-dependency-injection",
+    "type": "library",
+    "description": "DotKernel dependency injection component using class attributes.",
+    "license": "MIT",
+    "homepage": "https://github.com/dotkernel/dot-dependency-injection",
+    "support": {
+        "docs": "https://docs.dotkernel.org/dot-dependency-injection/",
+        "issues": "https://github.com/dotkernel/dot-dependency-injection/issues"
+    },
+    "authors": [
+        {
+            "name": "DotKernel Team",
+            "email": "team@dotkernel.com"
+        }
+    ],
+    "keywords": [
+        "attribute",
+        "container",
+        "dependency",
+        "di",
+        "factory",
+        "inject",
+        "service"
+    ],
+    "require": {
+        "php": "~8.2.0 || ~8.3.0",
+        "doctrine/orm": "^2.9 || ^3.0",
+        "psr/container": "^1.0 || ^2.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^10.5",
+        "vimeo/psalm": "^5.20",
+        "laminas/laminas-coding-standard": "^2.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "Dot\\DependencyInjection\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "DotTest\\DependencyInjection\\": "test/"
+        }
+    },
+    "scripts": {
+        "check": [
+            "@cs-check",
+            "@test"
+        ],
+        "cs-check": "phpcs",
+        "cs-fix": "phpcbf",
+        "test": "phpunit --colors=always",
+        "test-coverage": "phpunit --colors=always --coverage-clover clover.xml",
+        "static-analysis": "psalm --shepherd --stats"
+    },
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        }
+    }
+}

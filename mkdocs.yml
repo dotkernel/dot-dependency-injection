@@ -1,0 +1,23 @@
+docs_dir: docs/book
+site_dir: docs/html
+extra:
+  project: Packages
+  current_version: v1
+  versions:
+    - v1
+nav:
+  - Home: index.md
+  - v1:
+      - Overview: v1/overview.md
+      - Installation: v1/installation.md
+      - Configuration: v1/configuration.md
+      - Usage: v1/usage.md
+      - Factories: v1/factories.md
+      - Reference:
+          - "Inject class dependencies": v1/factories/service.md
+          - "Inject entity repositories": v1/factories/repository.md
+site_name: dot-dependency-injection
+site_description: "DotKernel's dependency injection service"
+repo_url: "https://github.com/dotkernel/dot-dependency-injection"
+plugins:
+  - search
