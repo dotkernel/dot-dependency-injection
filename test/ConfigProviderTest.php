@@ -9,7 +9,7 @@ use PHPUnit\Framework\TestCase;
 
 class ConfigProviderTest extends TestCase
 {
-    protected array $config;
+    protected array $config = [];
 
     protected function setup(): void
     {
