@@ -6,7 +6,7 @@ This package can clean up your code, by getting rid of all the factories you wri
 dependency or two.
 
 ![OSS Lifecycle](https://img.shields.io/osslifecycle/dotkernel/dot-dependency-injection)
-![PHP from Packagist (specify version)](https://img.shields.io/packagist/php-v/dotkernel/dot-dependency-injection/1.0.0)
+![PHP from Packagist (specify version)](https://img.shields.io/packagist/php-v/dotkernel/dot-dependency-injection/1.1.0)
 
 [![GitHub issues](https://img.shields.io/github/issues/dotkernel/dot-dependency-injection)](https://github.com/dotkernel/dot-dependency-injection/issues)
 [![GitHub forks](https://img.shields.io/github/forks/dotkernel/dot-dependency-injection)](https://github.com/dotkernel/dot-dependency-injection/network)
