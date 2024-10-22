@@ -17,18 +17,20 @@ dependency or two.
 [![codecov](https://codecov.io/gh/dotkernel/dot-dependency-injection/graph/badge.svg?token=DayAoD2Oj6)](https://codecov.io/gh/dotkernel/dot-dependency-injection)
 [![docs-build](https://github.com/dotkernel/dot-dependency-injection/actions/workflows/docs-build.yml/badge.svg)](https://github.com/dotkernel/dot-dependency-injection/actions/workflows/docs-build.yml)
 
-[![SymfonyInsight](https://insight.symfony.com/projects/d434b0aa-1f35-4f98-8356-a902f312ba5c/big.svg)](https://insight.symfony.com/projects/d434b0aa-1f35-4f98-8356-a902f312ba5c)
-
 ## Installation
 
 Install `dot-dependency-injection` by running the following command in your project directory:
 
-    composer require dotkernel/dot-dependency-injection
+```shell
+composer require dotkernel/dot-dependency-injection
+```
 
 After installing, register `dot-dependency-injection` in your project by adding the below line to your configuration
 aggregate (usually: `config/config.php`):
 
-     Dot\DependencyInjection\ConfigProvider::class,
+```php
+Dot\DependencyInjection\ConfigProvider::class,
+```
 
 ## Usage
 
@@ -36,11 +38,13 @@ aggregate (usually: `config/config.php`):
 
 You can register services in the service manager using `AttributedServiceFactory` as seen in the below example:
 
-    return [
-        'factories' => [
-            ServiceClass::class => AttributedServiceFactory::class,
-        ],
-    ];
+```php
+return [
+    'factories' => [
+        ServiceClass::class => AttributedServiceFactory::class,
+    ],
+];
+```
 
 ### NOTE
 
@@ -50,17 +54,19 @@ The next step is to add the `#[Inject]` attribute to the service constructor wit
 
 use Dot\DependencyInjection\Attribute\Inject;
 
-    #[Inject(
-        App\Srevice\Dependency1::class,
-        App\Srevice\Dependency2::class,
-        "config",
-    )]
-    public function __construct(
-        protected App\Srevice\Dependency1 $dep1,
-        protected App\Srevice\Dependency2 $dep2,
-        protected array $config
-    ) {
-    }
+```php
+#[Inject(
+    App\Srevice\Dependency1::class,
+    App\Srevice\Dependency2::class,
+    "config",
+)]
+public function __construct(
+    protected App\Srevice\Dependency1 $dep1,
+    protected App\Srevice\Dependency2 $dep2,
+    protected array $config
+) {
+}
+```
 
 The `#[Inject]` attribute is telling `AttributedServiceFactory` to inject the services specified as parameters.
 Valid service names should be provided, as registered in the service manager.
@@ -69,9 +75,11 @@ To inject an array value from the service manager, you can use dot notation as b
 
 use Dot\DependencyInjection\Attribute\Inject;
 
-    #[Inject(
-        "config.debug",
-    )]
+```php
+#[Inject(
+    "config.debug",
+)]
+```
 
 which will inject `$container->get('config')['debug'];`.
 
@@ -83,11 +91,13 @@ which will inject `$container->get('config')['debug'];`.
 
 You can register doctrine repositories and inject them using the `AttributedRepositoryFactory` as below:
 
-    return [
-        'factories' => [
-            ExampleRepository::class => AttributedRepositoryFactory::class,
-        ],
-    ];
+```php
+return [
+    'factories' => [
+        ExampleRepository::class => AttributedRepositoryFactory::class,
+    ],
+];
+```
 
 The next step is to add the `#[Entity]` attribute in the repository class.
 
@@ -95,16 +105,17 @@ The `name` field has to be the fully qualified class name.
 
 Every repository should extend `Doctrine\ORM\EntityRepository`.
 
-    use Api\App\Entity\Example;
-    use Doctrine\ORM\EntityRepository;
-    use Dot\DependencyInjection\Attribute\Entity;
-    
-    #[Entity(name: Example::class)]
-    class ExampleRepository extends EntityRepository
-    {
-    }
+```php
+use Api\App\Entity\Example;
+use Doctrine\ORM\EntityRepository;
+use Dot\DependencyInjection\Attribute\Entity;
 
-### NOTE
+#[Entity(name: Example::class)]
+class ExampleRepository extends EntityRepository
+{
+}
+```
 
-- dependencies injected via the`#[Entity]`/`#[Inject]` attributes are not cached
-- injecting dependencies into property setters are not supported
+> Dependencies injected via the`#[Entity]`/`#[Inject]` attributes are not cached
+
+> Injecting dependencies into property setters are not supported
