@@ -2,8 +2,7 @@
 
 ## Prepare repository
 
-`dot-dependency-injection` determines the entity a repository is related to by looking at the `#[Entity]` attribute,
-added to the repository class.
+`dot-dependency-injection` determines the entity a repository is related to by looking at the `#[Entity]` attribute, added to the repository class.
 
 ```php
 <?php
@@ -24,8 +23,7 @@ Each entity repository must extend `Doctrine\ORM\EntityRepository`.
 
 Open the ConfigProvider of the module where your repository resides.
 
-Add a new entry under `factories`, where the key is your repository FQCN and the value
-is `Dot\DependencyInjection\Factory\AttributedRepositoryFactory::class`.
+Add a new entry under `factories`, where the key is your repository FQCN and the value is `Dot\DependencyInjection\Factory\AttributedRepositoryFactory::class`.
 
 See below example for a better understanding of the file structure.
 

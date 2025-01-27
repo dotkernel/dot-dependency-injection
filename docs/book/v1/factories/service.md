@@ -2,9 +2,8 @@
 
 ## Prepare class
 
-`dot-dependency-injection` determines the dependencies by looking at the `#[Inject]` attribute, added to the
-constructor of a class.
-Dependencies are specified as separate parameters of the #[Inject] attribute.
+`dot-dependency-injection` determines the dependencies by looking at the `#[Inject]` attribute, added to the constructor of a class.
+Dependencies are specified as separate parameters of the `#[Inject]` attribute.
 
 ```php
 <?php
@@ -49,8 +48,7 @@ If your class needs the value of a specific configuration key, you can specify t
 
 Open the ConfigProvider of the module where your class resides.
 
-Add a new entry under `factories`, where the key is your class FQCN and the value
-is `Dot\DependencyInjection\Factory\AttributedServiceFactory::class`.
+Add a new entry under `factories`, where the key is your class FQCN and the value is `Dot\DependencyInjection\Factory\AttributedServiceFactory::class`.
 
 See below example for a better understanding of the file structure.
 
