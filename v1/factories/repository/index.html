@@ -309,8 +309,7 @@
 
     <h1 id="inject-entity-repositories">Inject entity repositories</h1>
 <h2 id="prepare-repository">Prepare repository</h2>
-<p><code>dot-dependency-injection</code> determines the entity a repository is related to by looking at the <code>#[Entity]</code> attribute,
-added to the repository class.</p>
+<p><code>dot-dependency-injection</code> determines the entity a repository is related to by looking at the <code>#[Entity]</code> attribute, added to the repository class.</p>
 <pre class="highlight"><code class="language-php">&lt;?php
 
 declare(strict_types=1);
@@ -324,8 +323,7 @@ class ExampleRepository extends Doctrine\ORM\EntityRepository
 <p>Each entity repository must extend <code>Doctrine\ORM\EntityRepository</code>.</p>
 <h2 id="register-repository">Register repository</h2>
 <p>Open the ConfigProvider of the module where your repository resides.</p>
-<p>Add a new entry under <code>factories</code>, where the key is your repository FQCN and the value
-is <code>Dot\DependencyInjection\Factory\AttributedRepositoryFactory::class</code>.</p>
+<p>Add a new entry under <code>factories</code>, where the key is your repository FQCN and the value is <code>Dot\DependencyInjection\Factory\AttributedRepositoryFactory::class</code>.</p>
 <p>See below example for a better understanding of the file structure.</p>
 <pre class="highlight"><code class="language-php">&lt;?php
 
@@ -356,12 +354,11 @@ class ConfigProvider
 
 
     <nav>
-    <ul class="page-nav hidden-print">
+    <ul class="list-unstyled page-nav row w-100 mt-5 mb-3 pt-5 pb-3">
         
-        <li class="page-nav__item">
+        <li class="col text-nowrap text-md-start">
             
                 <a rel="prev" class="page-nav__link page-nav__link--prev" href="../service/">
-                    <small class="page-nav__label">Previous</small>
                     <i class="bi bi-chevron-left"></i>
                     Inject class dependencies
                 </a>
@@ -369,7 +366,7 @@ class ConfigProvider
         </li>
 
         
-        <li class="page-nav__item">
+        <li class="col text-nowrap text-md-end pe-0">
             
         </li>
     </ul>
@@ -385,15 +382,13 @@ class ConfigProvider
         
         <footer class="footer">
     <div class="container">
+        <hr class="mb-5" />
+
         <div class="row">
             <div class="col-md-9">
-                <div class="footer_head">
-                    <p>Dotkernel</p>
-                </div>
-
                 <div class="row">
-                    <div class="col-md-6 dk_widget">
-                        <p>Dotkernel API</p>
+                    <div class="col-lg-4 col-md-6 dk_widget">
+                        <p class="ms-0">API</p>
 
                         <a href="https://docs.dotkernel.org/api-documentation/">
                             <i class="bi bi-arrow-return-right"></i>
@@ -401,8 +396,8 @@ class ConfigProvider
                         </a>
                     </div>
 
-                    <div class="col-md-6 dk_widget">
-                        <p>Dotkernel Admin</p>
+                    <div class="col-lg-4 col-md-6 dk_widget">
+                        <p class="ms-0">Admin</p>
 
                         <a href="https://docs.dotkernel.org/admin-documentation/">
                             <i class="bi bi-arrow-return-right"></i>
@@ -410,8 +405,8 @@ class ConfigProvider
                         </a>
                     </div>
 
-                    <div class="col-md-6 dk_widget">
-                        <p>Dotkernel Frontend</p>
+                    <div class="col-lg-4 col-md-6 dk_widget">
+                        <p class="ms-0">Frontend</p>
 
                         <a href="https://docs.dotkernel.org/frontend-documentation/">
                             <i class="bi bi-arrow-return-right"></i>
@@ -419,8 +414,8 @@ class ConfigProvider
                         </a>
                     </div>
 
-                    <div class="col-md-6 dk_widget">
-                        <p>Dotkernel Light</p>
+                    <div class="col-lg-4 col-md-6 dk_widget">
+                        <p class="ms-0">Light</p>
 
                         <a href="https://docs.dotkernel.org/light-documentation/">
                             <i class="bi bi-arrow-return-right"></i>
@@ -428,8 +423,8 @@ class ConfigProvider
                         </a>
                     </div>
 
-                    <div class="col-md-6 dk_widget">
-                        <p>Dotkernel Packages</p>
+                    <div class="col-lg-4 col-md-6 dk_widget">
+                        <p class="ms-0">Dotkernel Packages</p>
 
                         <a href="https://docs.dotkernel.org/packages/">
                             <i class="bi bi-arrow-return-right"></i>
@@ -437,8 +432,8 @@ class ConfigProvider
                         </a>
                     </div>
 
-                    <div class="col-md-6 dk_widget">
-                        <p>Dotkernel environment</p>
+                    <div class="col-lg-4 col-md-6 dk_widget">
+                        <p class="ms-0">Development environment</p>
 
                         <a href="https://docs.dotkernel.org/development/">
                             <i class="bi bi-arrow-return-right"></i>
@@ -448,34 +443,29 @@ class ConfigProvider
                 </div>
             </div>
 
-            <div class="col-md-3">
-                <div class="footer_head">
-                    <p>Support</p>
-                </div>
-
-                <ul class="support__list">
-                    <li class="support__list-item">
+            <div class="col-md-3 pt-3 mt-1">
+                <ul class="support__list row">
+                    <li class="support__list-item col-lg-6 mb-md-3">
                         <a href="https://github.com/dotkernel" class="support__link" title="GitHub" target="_blank">
                             <i class="bi bi-github"></i> GitHub
                         </a>
                     </li>
-                    <li class="support__list-item">
+                    <li class="support__list-item col-lg-6 mb-md-3">
                         <a href="https://dotkernel.slack.com" class="support__link" title="Chat" target="_blank">
                             <i class="bi bi-slack"></i> Slack
                         </a>
                     </li>
-                    <li class="support__list-item">
+                    <li class="support__list-item col-lg-6 mb-md-3">
                         <a href="https://twitter.com/dotkernel" class="support__link" title="X (Twitter)" target="_blank">
                             <i class="bi bi-twitter-x"></i> Twitter
                         </a>
                     </li>
-
-                    <li class="support__list-item">
+                    <li class="support__list-item col-lg-6 mb-md-3">
                         <a href="https://www.dotkernel.com/blog/" class="support__link" title="Blog" target="_blank">
                             <i class="bi bi-file-post"></i> Blog
                         </a>
                     </li>
-                    <li class="support__list-item">
+                    <li class="support__list-item col-lg-6 mb-md-3">
                         <a href="https://www.dotkernel.com/feed/" class="support__link" title="Blog feed" target="_blank">
                             <i class="bi bi-rss-fill"></i> Feed
                         </a>
@@ -484,8 +474,10 @@ class ConfigProvider
             </div>
         </div>
 
+        <hr class="mt-5" />
+
         <div class="footer_copy">
-            &#169; 2024 Dotkernel
+            &#169; Copyright Dotkernel 2024. All rights reserved.
         </div>
     </div>
 </footer>
