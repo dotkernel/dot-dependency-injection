@@ -24,7 +24,6 @@ Documentation is available at: https://docs.dotkernel.org/dot-dependency-injecti
 [![docs-build](https://github.com/dotkernel/dot-dependency-injection/actions/workflows/docs-build.yml/badge.svg)](https://github.com/dotkernel/dot-dependency-injection/actions/workflows/docs-build.yml)
 [![PHPStan](https://github.com/dotkernel/dot-dependency-injection/actions/workflows/static-analysis.yml/badge.svg?branch=1.0)](https://github.com/dotkernel/dot-dependency-injection/actions/workflows/static-analysis.yml)
 
-
 ## Installation
 
 Install `dot-dependency-injection` by running the following command in your project directory:
