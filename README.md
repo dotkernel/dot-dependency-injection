@@ -1,6 +1,6 @@
 # dot-dependency-injection
 
-DotKernel dependency injection service.
+`dot-dependency-injection` is Dotkernel's dependency injection service.
 
 This package can clean up your code, by getting rid of all the factories you write, sometimes just to inject a
 dependency or two.

@@ -1,7 +1,7 @@
 {
     "name": "dotkernel/dot-dependency-injection",
     "type": "library",
-    "description": "DotKernel dependency injection component using class attributes.",
+    "description": "Dotkernel dependency injection component using class attributes.",
     "license": "MIT",
     "homepage": "https://github.com/dotkernel/dot-dependency-injection",
     "support": {

@@ -7,7 +7,7 @@ parameters:
         - test
     treatPhpDocTypesAsCertain: false
     ignoreErrors:
-                - message: '#Constructor of an anonymous class has an unused parameter \$config.#'
-                  path: test/Factory/AttributedServiceFactoryTest.php
-                - message: '#Constructor of an anonymous class has an unused parameter \$test.#'
-                  path: test/Factory/AttributedServiceFactoryTest.php
+        - message: '#Constructor of an anonymous class has an unused parameter \$config.#'
+          path: test/Factory/AttributedServiceFactoryTest.php
+        - message: '#Constructor of an anonymous class has an unused parameter \$test.#'
+          path: test/Factory/AttributedServiceFactoryTest.php
