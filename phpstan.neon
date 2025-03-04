@@ -1,0 +1,13 @@
+includes:
+    - vendor/phpstan/phpstan-phpunit/extension.neon
+parameters:
+    level: 5
+    paths:
+        - src
+        - test
+    treatPhpDocTypesAsCertain: false
+    ignoreErrors:
+        - message: '#Constructor of an anonymous class has an unused parameter \$config.#'
+          path: test/Factory/AttributedServiceFactoryTest.php
+        - message: '#Constructor of an anonymous class has an unused parameter \$test.#'
+          path: test/Factory/AttributedServiceFactoryTest.php

@@ -17,7 +17,7 @@ nav:
           - "Inject class dependencies": v1/factories/service.md
           - "Inject entity repositories": v1/factories/repository.md
 site_name: dot-dependency-injection
-site_description: "DotKernel's dependency injection service"
+site_description: "Dotkernel's dependency injection service"
 repo_url: "https://github.com/dotkernel/dot-dependency-injection"
 plugins:
   - search
