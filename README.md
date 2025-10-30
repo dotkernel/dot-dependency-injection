@@ -11,7 +11,7 @@ Documentation is available at: https://docs.dotkernel.org/dot-dependency-injecti
 ## Badges
 
 ![OSS Lifecycle](https://img.shields.io/osslifecycle/dotkernel/dot-dependency-injection)
-![PHP from Packagist (specify version)](https://img.shields.io/packagist/php-v/dotkernel/dot-dependency-injection/1.2.0)
+![PHP from Packagist (specify version)](https://img.shields.io/packagist/php-v/dotkernel/dot-dependency-injection/1.3.0)
 
 [![GitHub issues](https://img.shields.io/github/issues/dotkernel/dot-dependency-injection)](https://github.com/dotkernel/dot-dependency-injection/issues)
 [![GitHub forks](https://img.shields.io/github/forks/dotkernel/dot-dependency-injection)](https://github.com/dotkernel/dot-dependency-injection/network)
@@ -31,8 +31,7 @@ Install `dot-dependency-injection` by running the following command in your proj
 composer require dotkernel/dot-dependency-injection
 ```
 
-After installing, register `dot-dependency-injection` in your project by adding the below line to your configuration
-aggregate (usually: `config/config.php`):
+After installing, register `dot-dependency-injection` in your project by adding the below line to your configuration aggregate (usually: `config/config.php`):
 
 ```php
 Dot\DependencyInjection\ConfigProvider::class,
@@ -52,16 +51,12 @@ return [
 ];
 ```
 
-### NOTE
-
 > You can use only the fully qualified class name as the service key
 
 The next step is to add the `#[Inject]` attribute to the service constructor with the service FQCNs to inject:
 
-use Dot\DependencyInjection\Attribute\Inject;
-
 ```php
-#[Inject(
+#[\Dot\DependencyInjection\Attribute\Inject(
     App\Srevice\Dependency1::class,
     App\Srevice\Dependency2::class,
     "config",
@@ -79,17 +74,13 @@ Valid service names should be provided, as registered in the service manager.
 
 To inject an array value from the service manager, you can use dot notation as below
 
-use Dot\DependencyInjection\Attribute\Inject;
-
 ```php
-#[Inject(
+#[\Dot\DependencyInjection\Attribute\Inject(
     "config.debug",
 )]
 ```
 
 which will inject `$container->get('config')['debug'];`.
-
-### NOTE
 
 > Even if using dot notation, `AttributedServiceFactory` will check first if a service name exists with that name.
 
@@ -124,4 +115,4 @@ class ExampleRepository extends EntityRepository
 
 > Dependencies injected via the`#[Entity]`/`#[Inject]` attributes are not cached
 
-> Injecting dependencies into property setters are not supported
+> Injecting dependencies into property setters is not supported

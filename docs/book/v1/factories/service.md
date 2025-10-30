@@ -50,7 +50,7 @@ Open the ConfigProvider of the module where your class resides.
 
 Add a new entry under `factories`, where the key is your class FQCN and the value is `Dot\DependencyInjection\Factory\AttributedServiceFactory::class`.
 
-See below example for a better understanding of the file structure.
+See the below example for a better understanding of the file structure.
 
 ```php
 <?php
