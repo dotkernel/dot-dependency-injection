@@ -11,7 +11,7 @@ declare(strict_types=1);
 
 namespace YourApp\Repository;
 
-#[Dot\DependencyInjection\Attribute\Entity(name: YourApp\Entity\Example::class)]
+#[\Dot\DependencyInjection\Attribute\Entity(name: YourApp\Entity\Example::class)]
 class ExampleRepository extends Doctrine\ORM\EntityRepository
 {
 }
@@ -25,7 +25,7 @@ Open the ConfigProvider of the module where your repository resides.
 
 Add a new entry under `factories`, where the key is your repository FQCN and the value is `Dot\DependencyInjection\Factory\AttributedRepositoryFactory::class`.
 
-See below example for a better understanding of the file structure.
+See the below example for a better understanding of the file structure.
 
 ```php
 <?php

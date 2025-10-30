@@ -2,9 +2,9 @@
 
 ## Supported Versions
 
-| Version | Supported          | PHP Version                                                                                                               |
-|---------|--------------------|---------------------------------------------------------------------------------------------------------------------------|
-| 1.x     | :white_check_mark: | ![PHP from Packagist (specify version)](https://img.shields.io/packagist/php-v/dotkernel/dot-dependency-injection/1.0.0) |
+| Version | Supported          | PHP Version                                                                                                              |
+|---------|--------------------|--------------------------------------------------------------------------------------------------------------------------|
+| 1.x     | :white_check_mark: | ![PHP from Packagist (specify version)](https://img.shields.io/packagist/php-v/dotkernel/dot-dependency-injection/1.3.0) |
 
 ## Reporting Potential Security Issues
 
