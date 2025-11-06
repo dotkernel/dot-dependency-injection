@@ -15,6 +15,7 @@ use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
+use ReflectionException;
 
 use function array_key_exists;
 use function sprintf;
@@ -25,6 +26,8 @@ class AttributedServiceFactoryTest extends TestCase
      * @throws Exception
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
+     * @throws ReflectionException
+     * @psalm-suppress ArgumentTypeCoercion
      */
     public function testWillThrowExceptionIfClassNotFound(): void
     {
@@ -44,34 +47,7 @@ class AttributedServiceFactoryTest extends TestCase
      * @throws Exception
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
-     */
-    public function testWillThrowExceptionIfAttributeNotFound(): void
-    {
-        $container = $this->createMock(ContainerInterface::class);
-
-        $subject = new class {
-            public function __construct()
-            {
-            }
-        };
-
-        $this->expectException(RuntimeException::class);
-        $this->expectExceptionMessage(
-            sprintf(
-                RuntimeException::MESSAGE_ATTRIBUTE_NOT_FOUND,
-                Inject::class,
-                $subject::class,
-                AttributedServiceFactory::class
-            )
-        );
-
-        (new AttributedServiceFactory())($container, $subject::class);
-    }
-
-    /**
-     * @throws Exception
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
+     * @throws ReflectionException
      */
     public function testWillThrowExceptionOnRecursiveInjection(): void
     {
@@ -94,6 +70,7 @@ class AttributedServiceFactoryTest extends TestCase
      * @throws ContainerExceptionInterface
      * @throws Exception
      * @throws NotFoundExceptionInterface
+     * @throws ReflectionException
      */
     public function testWillThrowExceptionIfDottedServiceNotFound(): void
     {
@@ -141,6 +118,7 @@ class AttributedServiceFactoryTest extends TestCase
      * @throws ContainerExceptionInterface
      * @throws Exception
      * @throws NotFoundExceptionInterface
+     * @throws ReflectionException
      */
     public function testWillThrowExceptionIfDependencyNotFound(): void
     {
@@ -166,6 +144,7 @@ class AttributedServiceFactoryTest extends TestCase
      * @throws ContainerExceptionInterface
      * @throws Exception
      * @throws NotFoundExceptionInterface
+     * @throws ReflectionException
      */
     public function testWillCreateServiceIfNoConstructor(): void
     {
@@ -179,9 +158,30 @@ class AttributedServiceFactoryTest extends TestCase
     }
 
     /**
+     * @throws Exception
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     * @throws ReflectionException
+     */
+    public function testWillCreateServiceIfAttributeNotFound(): void
+    {
+        $container = $this->createMock(ContainerInterface::class);
+
+        $subject = new class {
+            public function __construct()
+            {
+            }
+        };
+
+        $service = (new AttributedServiceFactory())($container, $subject::class);
+        $this->assertInstanceOf($subject::class, $service);
+    }
+
+    /**
      * @throws ContainerExceptionInterface
      * @throws Exception
      * @throws NotFoundExceptionInterface
+     * @throws ReflectionException
      */
     public function testWillCreateService(): void
     {

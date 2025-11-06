@@ -13,6 +13,7 @@ use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use ReflectionClass;
 
+use function assert;
 use function class_exists;
 
 class AttributedRepositoryFactory
@@ -54,7 +55,9 @@ class AttributedRepositoryFactory
         $attributes = $reflectionClass->getAttributes();
         foreach ($attributes as $attribute) {
             if ($attribute->getName() === Entity::class) {
-                return $attribute->newInstance();
+                $instance = $attribute->newInstance();
+                assert($instance instanceof Entity);
+                return $instance;
             }
         }
 
