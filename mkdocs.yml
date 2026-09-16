@@ -12,12 +12,12 @@ nav:
       - Installation: v1/installation.md
       - Configuration: v1/configuration.md
       - Usage: v1/usage.md
+      - FAQ: v1/faq.md
       - "Attributes vs. factories": v1/attributes-vs-factories.md
       - Factories: v1/factories.md
       - Reference:
           - "Inject class dependencies": v1/factories/service.md
           - "Inject entity repositories": v1/factories/repository.md
-      - FAQ: v1/faq.md
 site_name: dot-dependency-injection
 site_description: "Dotkernel's dependency injection service"
 repo_url: "https://github.com/dotkernel/dot-dependency-injection"
