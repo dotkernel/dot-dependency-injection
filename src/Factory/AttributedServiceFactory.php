@@ -28,6 +28,12 @@ use function is_array;
 class AttributedServiceFactory
 {
     /**
+     * Retained for backwards compatibility with subclasses overriding readKeysFromArray().
+     * Assigned immediately before the call, so a nested service creation cannot overwrite it.
+     */
+    protected string $originalKey = '';
+
+    /**
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      * @throws RuntimeException
@@ -124,18 +130,24 @@ class AttributedServiceFactory
             throw RuntimeException::classNotFound($identifier);
         }
 
-        return $parts === [] ? $service : $this->readKeysFromArray($parts, $service, $serviceKey);
+        if ($parts === []) {
+            return $service;
+        }
+
+        $this->originalKey = $serviceKey;
+
+        return $this->readKeysFromArray($parts, $service);
     }
 
     /**
      * @param non-empty-list<string> $keys
      * @throws InvalidArgumentException
      */
-    protected function readKeysFromArray(array $keys, mixed $array, string $serviceKey): mixed
+    protected function readKeysFromArray(array $keys, mixed $array): mixed
     {
         $key = array_shift($keys);
         if (! $this->hasKey($array, $key)) {
-            throw InvalidArgumentException::missingKey($serviceKey);
+            throw InvalidArgumentException::missingKey($this->originalKey);
         }
 
         $value = $array[$key];
@@ -144,16 +156,18 @@ class AttributedServiceFactory
         }
 
         if (! is_array($value) && ! $value instanceof ArrayAccess) {
-            throw InvalidArgumentException::missingKey($serviceKey);
+            throw InvalidArgumentException::missingKey($this->originalKey);
         }
 
-        return $this->readKeysFromArray($keys, $value, $serviceKey);
+        return $this->readKeysFromArray($keys, $value);
     }
 
     /**
      * Unlike isset(), this does not treat a null value as a missing key.
+     *
+     * Private so that it cannot collide with a method of the same name in a subclass.
      */
-    protected function hasKey(mixed $array, string $key): bool
+    private function hasKey(mixed $array, string $key): bool
     {
         if (is_array($array)) {
             return array_key_exists($key, $array);
