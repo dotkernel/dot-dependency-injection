@@ -18,11 +18,11 @@
         <meta name="docsearch:component" content="dot-dependency-injection">
 
         
-        <link rel="canonical" href="https://docs.dotkernel.org/dot-dependency-injection/v1/factories/">
+        <link rel="canonical" href="https://docs.dotkernel.org/dot-dependency-injection/v1/faq/">
         
         <link rel="shortcut icon" href="https://docs.dotkernel.org/img/dk_docs_favicon_white.svg">
 
-        <title>Factories - dot-dependency-injection - Dotkernel Documentation</title>
+        <title>FAQ - dot-dependency-injection - Dotkernel Documentation</title>
 
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -204,8 +204,8 @@
 
                     
                         
-<li class="subnavigation__list-item subnavigation__list-item--active">
-    <a href="./" class="subnavigation__link">Factories</a>
+<li class="subnavigation__list-item ">
+    <a href="../factories/" class="subnavigation__link">Factories</a>
 </li>
 
                     
@@ -239,13 +239,13 @@
         
         
 <li class="subnavigation__list-item ">
-    <a href="service/" class="subnavigation__link">Inject class dependencies</a>
+    <a href="../factories/service/" class="subnavigation__link">Inject class dependencies</a>
 </li>
 
         
         
 <li class="subnavigation__list-item ">
-    <a href="repository/" class="subnavigation__link">Inject entity repositories</a>
+    <a href="../factories/repository/" class="subnavigation__link">Inject entity repositories</a>
 </li>
 
         
@@ -254,8 +254,8 @@
 
                     
                         
-<li class="subnavigation__list-item ">
-    <a href="../faq/" class="subnavigation__link">FAQ</a>
+<li class="subnavigation__list-item subnavigation__list-item--active">
+    <a href="./" class="subnavigation__link">FAQ</a>
 </li>
 
                     
@@ -284,7 +284,7 @@
                     
                 
 
-                <li class="breadcrumb-item active" aria-current="page">Factories</li>
+                <li class="breadcrumb-item active" aria-current="page">FAQ</li>
             
         
     </ol>
@@ -319,17 +319,17 @@
                     </span>
                 </button>
                 <div class="md-actions-menu" role="menu">
-                    <button type="button" class="md-actions-item" role="menuitem" data-copy-url="../factories.md"
+                    <button type="button" class="md-actions-item" role="menuitem" data-copy-url="../faq.md"
                             onclick="copyMarkdownPage(this)">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>
                         <span class="label">Copy Page (as Markdown)</span>
                     </button>
-                    <a href="../factories.md" target="_blank" rel="alternate noopener noreferrer" type="text/markdown"
+                    <a href="../faq.md" target="_blank" rel="alternate noopener noreferrer" type="text/markdown"
                        class="md-actions-item" role="menuitem" title="View the Markdown source of this page">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h9l7 7v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/><path d="M13 4v6h6"/><path d="M8 15h8M8 11h4"/></svg>
                         <span class="label">View as Markdown</span>
                     </a>
-                    <a href="https://claude.ai/new?q=Read%20from%20https%3A//docs.dotkernel.org/dot-dependency-injection/v1/factories.md%20so%20I%20can%20ask%20questions%20about%20it." target="_blank" rel="noopener noreferrer"
+                    <a href="https://claude.ai/new?q=Read%20from%20https%3A//docs.dotkernel.org/dot-dependency-injection/v1/faq.md%20so%20I%20can%20ask%20questions%20about%20it." target="_blank" rel="noopener noreferrer"
                        class="md-actions-item" role="menuitem" title="Open this page in Claude">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l2.5 5.5L20 11l-5.5 2.5L12 19l-2.5-5.5L4 11l5.5-2.5z"/></svg>
                         <span class="label">Open in Claude</span>
@@ -339,82 +339,101 @@
         </div>
     
 
-    <h1 id="factories">Factories</h1>
-<p><code>dot-dependency-injection</code> is based on two reusable factories - <code>AttributedServiceFactory</code> and <code>AttributedRepositoryFactory</code> - able to inject any dependency into a class.</p>
-<p>Both are plain invokable factories, so they work with any PSR-11 container that passes the requested service name to the factory (for example <code>laminas/laminas-servicemanager</code>):</p>
-<pre class="highlight"><code class="language-php">$factory = new Dot\DependencyInjection\Factory\AttributedServiceFactory();
-$service = $factory($container, YourApp\Service\Example::class);</code></pre>
-<p>Both expose the same logic through <code>createObject(ContainerInterface $container, string $requestedName)</code>, which <code>__invoke()</code> simply delegates to.
-Use <code>createObject()</code> when you extend one of the factories and need to call the parent implementation explicitly.</p>
-<blockquote>
-<p>Because the service name is also the class to instantiate, you can only register these factories under the fully qualified class name of the service.
-Aliases still work, as long as the alias points to a service registered under its FQCN.</p>
-</blockquote>
-<h2 id="attributedservicefactory">AttributedServiceFactory</h2>
-<p>Injects class dependencies into classes.</p>
-<p>The factory looks for the <code>#[Inject]</code> attribute on the constructor of the requested class and resolves each of its parameters, in the declared order, into a constructor argument.</p>
-<p>Resolution of a single dependency happens as follows:</p>
-<ol>
-<li>if the container has a service registered under the exact name, that service is used - this is checked first, even when the name contains dots</li>
-<li>otherwise, if the name contains dots, the part before the first dot is resolved from the container and the remaining parts are read as keys from the returned array (or <code>ArrayAccess</code> object)</li>
-<li>otherwise, if the name is an existing class, the factory instantiates it directly with <code>new $name()</code></li>
-<li>otherwise, a <code>RuntimeException</code> is thrown</li>
-</ol>
-<p>A class whose constructor has no parameters at all does not need the <code>#[Inject]</code> attribute: if the requested class has no constructor, it is instantiated directly.</p>
-<h3 id="exceptions-thrown-by-attributedservicefactory">Exceptions thrown by AttributedServiceFactory</h3>
-<ul>
-<li><code>Dot\DependencyInjection\Exception\RuntimeException</code> if the requested class does not exist</li>
-<li><code>Dot\DependencyInjection\Exception\RuntimeException</code> if the requested class has a constructor without the <code>#[Inject]</code> attribute</li>
-<li><code>Dot\DependencyInjection\Exception\RuntimeException</code> if the class tries to inject itself</li>
-<li><code>Dot\DependencyInjection\Exception\RuntimeException</code> if a dependency is neither a registered service nor an existing class</li>
-<li><code>Dot\DependencyInjection\Exception\InvalidArgumentException</code> if a key of a dot-separated dependency cannot be found in the array service</li>
-<li><code>Psr\Container\NotFoundExceptionInterface</code> if a dependency does not exist in the service container</li>
-<li><code>Psr\Container\ContainerExceptionInterface</code> if the service manager is unable to provide an instance of a dependency</li>
-</ul>
-<h2 id="attributedrepositoryfactory">AttributedRepositoryFactory</h2>
-<p>Injects entity repositories into a class.</p>
-<p>The factory looks for the <code>#[Entity]</code> attribute on the requested repository class and returns <code>$container-&gt;get(EntityManagerInterface::class)-&gt;getRepository($entityName)</code>.</p>
-<p>Since Doctrine decides which repository class to build from the mapping of the entity, the entity referenced by the <code>#[Entity]</code> attribute must declare the repository back:</p>
-<pre class="highlight"><code class="language-php">#[ORM\Entity(repositoryClass: ExampleRepository::class)]</code></pre>
-<p>If it does not, Doctrine returns its default repository and the factory throws a <code>RuntimeException</code> instead of handing back an object of an unexpected type.</p>
-<h3 id="exceptions-thrown-by-attributedrepositoryfactory">Exceptions thrown by AttributedRepositoryFactory</h3>
-<ul>
-<li><code>Dot\DependencyInjection\Exception\RuntimeException</code> if the repository class does not exist</li>
-<li><code>Dot\DependencyInjection\Exception\RuntimeException</code> if the repository class does not extend <code>Doctrine\ORM\EntityRepository</code></li>
-<li><code>Dot\DependencyInjection\Exception\RuntimeException</code> if the repository class does not have the <code>#[Entity]</code> attribute</li>
-<li><code>Dot\DependencyInjection\Exception\RuntimeException</code> if the class referenced by the <code>#[Entity]</code> attribute does not exist</li>
-<li><code>Dot\DependencyInjection\Exception\RuntimeException</code> if Doctrine returns a repository that is not an instance of the requested class</li>
-<li><code>Psr\Container\NotFoundExceptionInterface</code> if <code>Doctrine\ORM\EntityManagerInterface</code> does not exist in the service container</li>
-<li><code>Psr\Container\ContainerExceptionInterface</code> if the service manager is unable to provide an instance of <code>Doctrine\ORM\EntityManagerInterface</code></li>
-</ul>
-<h2 id="exception-hierarchy">Exception hierarchy</h2>
-<p>Both exceptions implement <code>Dot\DependencyInjection\Exception\ExceptionInterface</code>, so you can catch anything thrown by this package with a single <code>catch</code> block:</p>
-<pre class="highlight"><code class="language-php">try {
-    $service = $container-&gt;get(YourApp\Service\Example::class);
-} catch (Dot\DependencyInjection\Exception\ExceptionInterface $exception) {
-    // ...
-}</code></pre>
-<div class="table-responsive"><table>
-<thead>
-<tr>
-<th>Exception</th>
-<th>Extends</th>
-<th>Meaning</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>RuntimeException</code></td>
-<td><code>\RuntimeException</code></td>
-<td>the class or service graph cannot be built as declared</td>
-</tr>
-<tr>
-<td><code>InvalidArgumentException</code></td>
-<td><code>\InvalidArgumentException</code></td>
-<td>a dot-separated dependency points to a missing array key</td>
-</tr>
-</tbody>
-</table></div>
+    <h1 id="faq">FAQ</h1>
+<h2 id="setup-and-registration">Setup and registration</h2>
+<h3 id="do-i-still-have-to-register-every-service-in-a-configprovider">Do I still have to register every service in a ConfigProvider?</h3>
+<p>Yes.
+This package replaces the factory class you would write for a service, not the <code>dependencies.factories</code> entry that tells the container which factory to use.
+Each service still needs one line mapping its FQCN to <code>AttributedServiceFactory</code> or <code>AttributedRepositoryFactory</code>.</p>
+<h3 id="why-does-it-not-read-the-dependencies-from-my-constructor-type-hints">Why does it not read the dependencies from my constructor type hints?</h3>
+<p>Container identifiers are not types.
+The same type can be registered several times under different names, plenty of services are registered under strings such as <code>config</code>, and a parameter typed against an interface gives no indication of which implementation you want.
+<code>#[Inject]</code> asks you for the identifier because that is the only thing the container can actually resolve.</p>
+<h3 id="can-i-register-a-service-under-a-name-other-than-its-fully-qualified-class-name">Can I register a service under a name other than its fully qualified class name?</h3>
+<p>Not directly, because the factory instantiates the requested service name.
+Register the service under its FQCN and add an alias pointing to it if you need a shorter name.</p>
+<h3 id="can-i-keep-some-hand-written-factories">Can I keep some hand-written factories?</h3>
+<p>Yes, the factory is chosen per service, so both styles can live side by side in the same module.
+See <a href="../attributes-vs-factories/">Attributes vs. factories</a> for the cases where a hand-written factory is still the better choice.</p>
+<h2 id="the-inject-attribute">The <code>#[Inject]</code> attribute</h2>
+<h3 id="my-constructor-takes-no-arguments-do-i-need-the-attribute">My constructor takes no arguments, do I need the attribute?</h3>
+<p>It depends on whether the constructor exists at all.
+A class with no constructor is instantiated directly and needs no attribute.
+A class that explicitly declares <code>public function __construct()</code> does need the attribute, otherwise you get <code>You need to use the "...\Inject" attribute on the "..." class</code>.
+Use <code>#[Inject()]</code> with no parameters, or delete the empty constructor.</p>
+<h3 id="what-happens-if-the-order-in-the-attribute-does-not-match-the-constructor">What happens if the order in the attribute does not match the constructor?</h3>
+<p>Nothing checks it, and the arguments are passed positionally in the order you listed them.
+If the types differ you get a <code>TypeError</code> when the service is created; if they happen to be compatible, the wrong values are injected silently.
+Keep the attribute parameters in the same order as the constructor parameters.</p>
+<h3 id="can-i-leave-out-some-constructor-parameters">Can I leave out some constructor parameters?</h3>
+<p>Only trailing ones that have a default value.
+Arguments are passed positionally, so you cannot skip a parameter in the middle of the list and you cannot inject by parameter name.</p>
+<h3 id="can-i-inject-a-plain-value-such-as-a-string-or-a-number">Can I inject a plain value, such as a string or a number?</h3>
+<p>No.
+Every parameter of the attribute is resolved as a container identifier, a class name, or a dot-separated path into an array service.
+Put the literal in your configuration and inject it with dot notation instead.</p>
+<h3 id="is-inject-inherited-by-subclasses">Is <code>#[Inject]</code> inherited by subclasses?</h3>
+<p>Yes.
+If a subclass does not declare its own constructor, the factory reads the attribute from the inherited constructor and builds the subclass with the dependencies the parent declared.
+Declare a constructor with its own <code>#[Inject]</code> in the subclass to change them.</p>
+<h3 id="can-i-put-inject-on-a-property-or-a-setter">Can I put <code>#[Inject]</code> on a property or a setter?</h3>
+<p>No.
+The attribute targets methods, and only the constructor is inspected.</p>
+<h3 id="can-i-inject-the-same-service-twice">Can I inject the same service twice?</h3>
+<p>Yes, list it as many times as your constructor needs it.
+A shared service is resolved from the container each time, so both parameters receive the same instance.</p>
+<h2 id="configuration-values">Configuration values</h2>
+<h3 id="how-do-i-inject-a-single-configuration-key">How do I inject a single configuration key?</h3>
+<p>Use dot notation: <code>#[Inject('config.example')]</code> injects <code>$container-&gt;get('config')['example']</code>.
+Paths of any depth work, and both arrays and <code>ArrayAccess</code> objects can be traversed.</p>
+<h3 id="what-if-a-service-is-registered-under-a-name-that-contains-dots">What if a service is registered under a name that contains dots?</h3>
+<p>The full name is always looked up in the container first, so a service literally registered as <code>config.example</code> wins over the <code>example</code> key of the <code>config</code> service.</p>
+<h3 id="can-i-address-a-configuration-key-that-itself-contains-a-dot">Can I address a configuration key that itself contains a dot?</h3>
+<p>No.
+Only the segment before the first dot is treated as a service identifier; every following dot starts a new array key, so a key named <code>my.key</code> cannot be reached.
+Nest the value one level deeper, or expose it as its own service.</p>
+<h3 id="what-if-the-configuration-value-is-null">What if the configuration value is <code>null</code>?</h3>
+<p>It is injected as <code>null</code>.
+A key that exists but holds <code>null</code> is not treated as missing.</p>
+<h3 id="what-if-the-key-does-not-exist">What if the key does not exist?</h3>
+<p><code>Dot\DependencyInjection\Exception\InvalidArgumentException</code> is thrown, naming the full path you declared.
+You get the same exception when the path continues past a scalar value, for example <code>config.debug.verbose</code> where <code>config.debug</code> is a boolean.</p>
+<h2 id="doctrine-repositories">Doctrine repositories</h2>
+<h3 id="why-do-i-get-a-repository-of-the-wrong-class-or-an-unexpected-repository-error">Why do I get a repository of the wrong class, or an "unexpected repository" error?</h3>
+<p>Doctrine, not this package, decides which class to instantiate, and it reads that from the mapping of the entity.
+Add <code>#[ORM\Entity(repositoryClass: ExampleRepository::class)]</code> to the entity, so that it points back to the repository that declares it through <code>#[Entity]</code>.</p>
+<h3 id="do-i-still-need-entity-if-the-entity-already-declares-repositoryclass">Do I still need <code>#[Entity]</code> if the entity already declares <code>repositoryClass</code>?</h3>
+<p>Yes.
+The two point at each other: <code>repositoryClass</code> tells Doctrine which class to build, and <code>#[Entity]</code> tells the factory which entity to ask for.</p>
+<h3 id="can-i-inject-extra-dependencies-into-a-repository">Can I inject extra dependencies into a repository?</h3>
+<p>No.
+The repository is constructed by Doctrine with the entity manager and the class metadata, so its constructor signature is not yours to change.
+Put the extra dependencies in a service that receives the repository through <code>#[Inject]</code>.</p>
+<h3 id="how-do-i-inject-a-repository-into-a-service">How do I inject a repository into a service?</h3>
+<p>Register the repository with <code>AttributedRepositoryFactory</code>, then list it like any other service: <code>#[Inject(ExampleRepository::class)]</code>.</p>
+<h3 id="do-i-need-doctrineorm-if-i-only-use-attributedservicefactory">Do I need <code>doctrine/orm</code> if I only use <code>AttributedServiceFactory</code>?</h3>
+<p>It is a hard requirement of the package, so it will be installed, but nothing loads it unless you use <code>AttributedRepositoryFactory</code>.</p>
+<h2 id="performance">Performance</h2>
+<h3 id="is-the-attribute-lookup-cached">Is the attribute lookup cached?</h3>
+<p>No.
+One <code>ReflectionClass</code> is created per service creation and the attribute is read every time.
+The container's own instance cache still applies, so a shared service is built once per request no matter how many classes inject it.</p>
+<h3 id="does-that-slow-down-my-application">Does that slow down my application?</h3>
+<p>The reflection happens once per service that a request actually builds, and it is a lookup on an already-loaded class rather than file parsing.
+If a profile ever shows it mattering for a specific hot service, write a factory by hand for that one service.</p>
+<h2 id="testing-and-debugging">Testing and debugging</h2>
+<h3 id="how-do-i-unit-test-a-class-that-uses-inject">How do I unit test a class that uses <code>#[Inject]</code>?</h3>
+<p>Exactly as you would test any other class: instantiate it with <code>new</code> and pass test doubles.
+The attribute is inert outside the factory, so it has no effect on your tests.</p>
+<h3 id="i-get-you-need-to-use-the-attribute-on-the-class-what-now">I get "You need to use the ... attribute on the ... class", what now?</h3>
+<p>The requested class has a constructor without the <code>#[Inject]</code> attribute, or the attribute sits somewhere other than the constructor.
+Check that the attribute is imported from <code>Dot\DependencyInjection\Attribute\Inject</code>, because an attribute of another <code>Inject</code> class is ignored.</p>
+<h3 id="are-circular-dependencies-detected">Are circular dependencies detected?</h3>
+<p>Only direct self-injection, which throws a <code>RuntimeException</code>.
+A cycle spanning several classes, where <code>A</code> needs <code>B</code> and <code>B</code> needs <code>A</code>, is not detected and ends in infinite recursion, exactly as it would with hand-written factories.</p>
+<h3 id="which-exception-should-i-catch">Which exception should I catch?</h3>
+<p>Both exceptions of this package implement <code>Dot\DependencyInjection\Exception\ExceptionInterface</code>, so a single <code>catch</code> covers every wiring error.
+Note that your container usually wraps them, for example in a <code>Laminas\ServiceManager\Exception\ServiceNotCreatedException</code>, so inspect the previous exception.</p>
 
 
 
@@ -424,20 +443,15 @@ Aliases still work, as long as the alias points to a service registered under it
         
         <li class="col text-nowrap text-md-start">
             
-                <a rel="prev" class="page-nav__link page-nav__link--prev" href="../attributes-vs-factories/">
+                <a rel="prev" class="page-nav__link page-nav__link--prev" href="../factories/repository/">
                     <i class="bi bi-chevron-left"></i>
-                    Attributes vs. factories
+                    Inject entity repositories
                 </a>
             
         </li>
 
         
         <li class="col text-nowrap text-md-end pe-0">
-            
-                <a rel="next" class="page-nav__link page-nav__link--next" href="service/">
-                    Inject class dependencies
-                    <i class="bi bi-chevron-right"></i>
-                </a>
             
         </li>
     </ul>
@@ -461,15 +475,27 @@ Aliases still work, as long as the alias points to a service registered under it
             <ul class="toc__list">
             
                 <li class="toc__entry">
-                    <a href="#attributedservicefactory" class="toc__link nav-link">AttributedServiceFactory</a>
+                    <a href="#setup-and-registration" class="toc__link nav-link">Setup and registration</a>
                 </li>
             
                 <li class="toc__entry">
-                    <a href="#attributedrepositoryfactory" class="toc__link nav-link">AttributedRepositoryFactory</a>
+                    <a href="#the-inject-attribute" class="toc__link nav-link">The #[Inject] attribute</a>
                 </li>
             
                 <li class="toc__entry">
-                    <a href="#exception-hierarchy" class="toc__link nav-link">Exception hierarchy</a>
+                    <a href="#configuration-values" class="toc__link nav-link">Configuration values</a>
+                </li>
+            
+                <li class="toc__entry">
+                    <a href="#doctrine-repositories" class="toc__link nav-link">Doctrine repositories</a>
+                </li>
+            
+                <li class="toc__entry">
+                    <a href="#performance" class="toc__link nav-link">Performance</a>
+                </li>
+            
+                <li class="toc__entry">
+                    <a href="#testing-and-debugging" class="toc__link nav-link">Testing and debugging</a>
                 </li>
             
             </ul>

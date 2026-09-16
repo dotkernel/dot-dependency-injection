@@ -18,11 +18,11 @@
         <meta name="docsearch:component" content="dot-dependency-injection">
 
         
-        <link rel="canonical" href="https://docs.dotkernel.org/dot-dependency-injection/v1/factories/">
+        <link rel="canonical" href="https://docs.dotkernel.org/dot-dependency-injection/v1/attributes-vs-factories/">
         
         <link rel="shortcut icon" href="https://docs.dotkernel.org/img/dk_docs_favicon_white.svg">
 
-        <title>Factories - dot-dependency-injection - Dotkernel Documentation</title>
+        <title>Attributes vs. factories - dot-dependency-injection - Dotkernel Documentation</title>
 
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -198,14 +198,14 @@
 
                     
                         
-<li class="subnavigation__list-item ">
-    <a href="../attributes-vs-factories/" class="subnavigation__link">Attributes vs. factories</a>
+<li class="subnavigation__list-item subnavigation__list-item--active">
+    <a href="./" class="subnavigation__link">Attributes vs. factories</a>
 </li>
 
                     
                         
-<li class="subnavigation__list-item subnavigation__list-item--active">
-    <a href="./" class="subnavigation__link">Factories</a>
+<li class="subnavigation__list-item ">
+    <a href="../factories/" class="subnavigation__link">Factories</a>
 </li>
 
                     
@@ -239,13 +239,13 @@
         
         
 <li class="subnavigation__list-item ">
-    <a href="service/" class="subnavigation__link">Inject class dependencies</a>
+    <a href="../factories/service/" class="subnavigation__link">Inject class dependencies</a>
 </li>
 
         
         
 <li class="subnavigation__list-item ">
-    <a href="repository/" class="subnavigation__link">Inject entity repositories</a>
+    <a href="../factories/repository/" class="subnavigation__link">Inject entity repositories</a>
 </li>
 
         
@@ -284,7 +284,7 @@
                     
                 
 
-                <li class="breadcrumb-item active" aria-current="page">Factories</li>
+                <li class="breadcrumb-item active" aria-current="page">Attributes vs. factories</li>
             
         
     </ol>
@@ -319,17 +319,17 @@
                     </span>
                 </button>
                 <div class="md-actions-menu" role="menu">
-                    <button type="button" class="md-actions-item" role="menuitem" data-copy-url="../factories.md"
+                    <button type="button" class="md-actions-item" role="menuitem" data-copy-url="../attributes-vs-factories.md"
                             onclick="copyMarkdownPage(this)">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>
                         <span class="label">Copy Page (as Markdown)</span>
                     </button>
-                    <a href="../factories.md" target="_blank" rel="alternate noopener noreferrer" type="text/markdown"
+                    <a href="../attributes-vs-factories.md" target="_blank" rel="alternate noopener noreferrer" type="text/markdown"
                        class="md-actions-item" role="menuitem" title="View the Markdown source of this page">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h9l7 7v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/><path d="M13 4v6h6"/><path d="M8 15h8M8 11h4"/></svg>
                         <span class="label">View as Markdown</span>
                     </a>
-                    <a href="https://claude.ai/new?q=Read%20from%20https%3A//docs.dotkernel.org/dot-dependency-injection/v1/factories.md%20so%20I%20can%20ask%20questions%20about%20it." target="_blank" rel="noopener noreferrer"
+                    <a href="https://claude.ai/new?q=Read%20from%20https%3A//docs.dotkernel.org/dot-dependency-injection/v1/attributes-vs-factories.md%20so%20I%20can%20ask%20questions%20about%20it." target="_blank" rel="noopener noreferrer"
                        class="md-actions-item" role="menuitem" title="Open this page in Claude">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l2.5 5.5L20 11l-5.5 2.5L12 19l-2.5-5.5L4 11l5.5-2.5z"/></svg>
                         <span class="label">Open in Claude</span>
@@ -339,82 +339,155 @@
         </div>
     
 
-    <h1 id="factories">Factories</h1>
-<p><code>dot-dependency-injection</code> is based on two reusable factories - <code>AttributedServiceFactory</code> and <code>AttributedRepositoryFactory</code> - able to inject any dependency into a class.</p>
-<p>Both are plain invokable factories, so they work with any PSR-11 container that passes the requested service name to the factory (for example <code>laminas/laminas-servicemanager</code>):</p>
-<pre class="highlight"><code class="language-php">$factory = new Dot\DependencyInjection\Factory\AttributedServiceFactory();
-$service = $factory($container, YourApp\Service\Example::class);</code></pre>
-<p>Both expose the same logic through <code>createObject(ContainerInterface $container, string $requestedName)</code>, which <code>__invoke()</code> simply delegates to.
-Use <code>createObject()</code> when you extend one of the factories and need to call the parent implementation explicitly.</p>
-<blockquote>
-<p>Because the service name is also the class to instantiate, you can only register these factories under the fully qualified class name of the service.
-Aliases still work, as long as the alias points to a service registered under its FQCN.</p>
-</blockquote>
-<h2 id="attributedservicefactory">AttributedServiceFactory</h2>
-<p>Injects class dependencies into classes.</p>
-<p>The factory looks for the <code>#[Inject]</code> attribute on the constructor of the requested class and resolves each of its parameters, in the declared order, into a constructor argument.</p>
-<p>Resolution of a single dependency happens as follows:</p>
-<ol>
-<li>if the container has a service registered under the exact name, that service is used - this is checked first, even when the name contains dots</li>
-<li>otherwise, if the name contains dots, the part before the first dot is resolved from the container and the remaining parts are read as keys from the returned array (or <code>ArrayAccess</code> object)</li>
-<li>otherwise, if the name is an existing class, the factory instantiates it directly with <code>new $name()</code></li>
-<li>otherwise, a <code>RuntimeException</code> is thrown</li>
-</ol>
-<p>A class whose constructor has no parameters at all does not need the <code>#[Inject]</code> attribute: if the requested class has no constructor, it is instantiated directly.</p>
-<h3 id="exceptions-thrown-by-attributedservicefactory">Exceptions thrown by AttributedServiceFactory</h3>
-<ul>
-<li><code>Dot\DependencyInjection\Exception\RuntimeException</code> if the requested class does not exist</li>
-<li><code>Dot\DependencyInjection\Exception\RuntimeException</code> if the requested class has a constructor without the <code>#[Inject]</code> attribute</li>
-<li><code>Dot\DependencyInjection\Exception\RuntimeException</code> if the class tries to inject itself</li>
-<li><code>Dot\DependencyInjection\Exception\RuntimeException</code> if a dependency is neither a registered service nor an existing class</li>
-<li><code>Dot\DependencyInjection\Exception\InvalidArgumentException</code> if a key of a dot-separated dependency cannot be found in the array service</li>
-<li><code>Psr\Container\NotFoundExceptionInterface</code> if a dependency does not exist in the service container</li>
-<li><code>Psr\Container\ContainerExceptionInterface</code> if the service manager is unable to provide an instance of a dependency</li>
-</ul>
-<h2 id="attributedrepositoryfactory">AttributedRepositoryFactory</h2>
-<p>Injects entity repositories into a class.</p>
-<p>The factory looks for the <code>#[Entity]</code> attribute on the requested repository class and returns <code>$container-&gt;get(EntityManagerInterface::class)-&gt;getRepository($entityName)</code>.</p>
-<p>Since Doctrine decides which repository class to build from the mapping of the entity, the entity referenced by the <code>#[Entity]</code> attribute must declare the repository back:</p>
-<pre class="highlight"><code class="language-php">#[ORM\Entity(repositoryClass: ExampleRepository::class)]</code></pre>
-<p>If it does not, Doctrine returns its default repository and the factory throws a <code>RuntimeException</code> instead of handing back an object of an unexpected type.</p>
-<h3 id="exceptions-thrown-by-attributedrepositoryfactory">Exceptions thrown by AttributedRepositoryFactory</h3>
-<ul>
-<li><code>Dot\DependencyInjection\Exception\RuntimeException</code> if the repository class does not exist</li>
-<li><code>Dot\DependencyInjection\Exception\RuntimeException</code> if the repository class does not extend <code>Doctrine\ORM\EntityRepository</code></li>
-<li><code>Dot\DependencyInjection\Exception\RuntimeException</code> if the repository class does not have the <code>#[Entity]</code> attribute</li>
-<li><code>Dot\DependencyInjection\Exception\RuntimeException</code> if the class referenced by the <code>#[Entity]</code> attribute does not exist</li>
-<li><code>Dot\DependencyInjection\Exception\RuntimeException</code> if Doctrine returns a repository that is not an instance of the requested class</li>
-<li><code>Psr\Container\NotFoundExceptionInterface</code> if <code>Doctrine\ORM\EntityManagerInterface</code> does not exist in the service container</li>
-<li><code>Psr\Container\ContainerExceptionInterface</code> if the service manager is unable to provide an instance of <code>Doctrine\ORM\EntityManagerInterface</code></li>
-</ul>
-<h2 id="exception-hierarchy">Exception hierarchy</h2>
-<p>Both exceptions implement <code>Dot\DependencyInjection\Exception\ExceptionInterface</code>, so you can catch anything thrown by this package with a single <code>catch</code> block:</p>
-<pre class="highlight"><code class="language-php">try {
-    $service = $container-&gt;get(YourApp\Service\Example::class);
-} catch (Dot\DependencyInjection\Exception\ExceptionInterface $exception) {
-    // ...
+    <h1 id="attributes-vs-factories">Attributes vs. factories</h1>
+<p>A PSR-11 container needs to know how to build every service.
+The usual answer is a factory class per service, which means that a project ends up carrying one extra file for every class it wires up.
+<code>dot-dependency-injection</code> replaces those files with a single attribute on the constructor and two reusable factories.</p>
+<h2 id="the-same-service-both-ways">The same service, both ways</h2>
+<h3 id="with-a-hand-written-factory">With a hand-written factory</h3>
+<p>Two files, plus the registration.</p>
+<pre class="highlight"><code class="language-php">&lt;?php
+
+declare(strict_types=1);
+
+namespace YourApp\Service;
+
+use Doctrine\ORM\EntityManagerInterface;
+use YourApp\Helper\UrlHelper;
+use YourApp\Repository\UserRepository;
+
+class UserService
+{
+    public function __construct(
+        protected UserRepository $userRepository,
+        protected UrlHelper $urlHelper,
+        protected array $config,
+    ) {
+    }
 }</code></pre>
+<pre class="highlight"><code class="language-php">&lt;?php
+
+declare(strict_types=1);
+
+namespace YourApp\Service;
+
+use Psr\Container\ContainerInterface;
+use YourApp\Helper\UrlHelper;
+use YourApp\Repository\UserRepository;
+
+class UserServiceFactory
+{
+    public function __invoke(ContainerInterface $container): UserService
+    {
+        return new UserService(
+            $container-&gt;get(UserRepository::class),
+            $container-&gt;get(UrlHelper::class),
+            $container-&gt;get('config')['user'],
+        );
+    }
+}</code></pre>
+<pre class="highlight"><code class="language-php">'factories' =&gt; [
+    UserService::class =&gt; UserServiceFactory::class,
+],</code></pre>
+<h3 id="with-inject">With <code>#[Inject]</code></h3>
+<p>One file, and the registration.</p>
+<pre class="highlight"><code class="language-php">&lt;?php
+
+declare(strict_types=1);
+
+namespace YourApp\Service;
+
+use Dot\DependencyInjection\Attribute\Inject;
+use YourApp\Helper\UrlHelper;
+use YourApp\Repository\UserRepository;
+
+class UserService
+{
+    #[Inject(
+        UserRepository::class,
+        UrlHelper::class,
+        'config.user',
+    )]
+    public function __construct(
+        protected UserRepository $userRepository,
+        protected UrlHelper $urlHelper,
+        protected array $config,
+    ) {
+    }
+}</code></pre>
+<pre class="highlight"><code class="language-php">'factories' =&gt; [
+    UserService::class =&gt; AttributedServiceFactory::class,
+],</code></pre>
+<h2 id="why-this-is-an-advantage">Why this is an advantage</h2>
+<p><strong>Fewer files, less code.</strong>
+A module with 20 services no longer needs 20 factory classes.
+The wiring shrinks from a class per service to four lines inside the class that already exists.</p>
+<p><strong>One source of truth.</strong>
+The dependency list sits directly above the constructor it feeds.
+Adding a constructor parameter and forgetting to update the factory is the single most common wiring bug in a factory-based project, and it cannot happen when both live on the same lines.</p>
+<p><strong>No drift, no duplication.</strong>
+Hand-written factories repeat the same <code>$container-&gt;get(...)</code> pattern hundreds of times across a project.
+Every repetition is a place where a typo, a stale service name, or a copy-paste mistake can hide.</p>
+<p><strong>Nothing to test.</strong>
+A trivial factory is still code, so it shows up in coverage reports and either gets a test that asserts nothing meaningful or drags coverage down.
+The two factories in this package are tested once, here.</p>
+<p><strong>Configuration without boilerplate.</strong>
+<code>'config.user'</code> replaces <code>$container-&gt;get('config')['user']</code> and fails with a clear, package-level exception naming the full path when that key is missing, instead of an <code>Undefined array key</code> notice or a silent <code>null</code>.</p>
+<p><strong>Repositories for free.</strong>
+<code>AttributedRepositoryFactory</code> removes an entire category of factories: every Doctrine repository in a project is otherwise a near-identical factory calling <code>$container-&gt;get(EntityManagerInterface::class)-&gt;getRepository(...)</code>.</p>
+<p><strong>Consistent failures.</strong>
+All wiring errors surface as <code>Dot\DependencyInjection\Exception\ExceptionInterface</code>, with messages that name the class, the attribute and the factory involved, rather than whatever each hand-written factory happened to do.</p>
+<p><strong>Readable classes.</strong>
+Anyone opening the class sees what it needs and where each dependency comes from without opening a second file.</p>
+<h2 id="what-you-give-up">What you give up</h2>
+<p>Being explicit about the trade-offs matters more than the line count.</p>
 <div class="table-responsive"><table>
 <thead>
 <tr>
-<th>Exception</th>
-<th>Extends</th>
-<th>Meaning</th>
+<th></th>
+<th>Hand-written factory</th>
+<th><code>#[Inject]</code></th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><code>RuntimeException</code></td>
-<td><code>\RuntimeException</code></td>
-<td>the class or service graph cannot be built as declared</td>
+<td>Wiring is checked by the type system</td>
+<td>yes, <code>new UserService(...)</code> is analysed</td>
+<td>no, names are strings resolved at runtime</td>
 </tr>
 <tr>
-<td><code>InvalidArgumentException</code></td>
-<td><code>\InvalidArgumentException</code></td>
-<td>a dot-separated dependency points to a missing array key</td>
+<td>Order of arguments verified statically</td>
+<td>yes</td>
+<td>no, the attribute order must match the constructor</td>
+</tr>
+<tr>
+<td>Reflection at build time</td>
+<td>none</td>
+<td>one <code>ReflectionClass</code> per service creation, not cached</td>
+</tr>
+<tr>
+<td>Conditional or computed wiring</td>
+<td>anything PHP allows</td>
+<td>not supported</td>
+</tr>
+<tr>
+<td>Works on third-party classes</td>
+<td>yes</td>
+<td>only on classes you can annotate</td>
 </tr>
 </tbody>
 </table></div>
+<h2 id="when-to-keep-writing-a-factory">When to keep writing a factory</h2>
+<p><code>#[Inject]</code> covers the common case: a constructor that receives services and configuration.
+Write a factory by hand when you need something else.</p>
+<ul>
+<li>the arguments are computed, conditional, or come from something other than the container</li>
+<li>the service is decorated, or built through a delegator or an abstract factory</li>
+<li>you are wiring a class you do not own and cannot annotate</li>
+<li>the class is intentionally constructed with runtime arguments rather than resolved from the container</li>
+<li>injection has to happen somewhere other than the constructor</li>
+</ul>
+<p>Both styles coexist without any friction: the factory is chosen per service in your <code>ConfigProvider</code>, so you can use <code>AttributedServiceFactory</code> for the bulk of a module and a hand-written factory for the few services that need one.</p>
 
 
 
@@ -424,9 +497,9 @@ Aliases still work, as long as the alias points to a service registered under it
         
         <li class="col text-nowrap text-md-start">
             
-                <a rel="prev" class="page-nav__link page-nav__link--prev" href="../attributes-vs-factories/">
+                <a rel="prev" class="page-nav__link page-nav__link--prev" href="../usage/">
                     <i class="bi bi-chevron-left"></i>
-                    Attributes vs. factories
+                    Usage
                 </a>
             
         </li>
@@ -434,8 +507,8 @@ Aliases still work, as long as the alias points to a service registered under it
         
         <li class="col text-nowrap text-md-end pe-0">
             
-                <a rel="next" class="page-nav__link page-nav__link--next" href="service/">
-                    Inject class dependencies
+                <a rel="next" class="page-nav__link page-nav__link--next" href="../factories/">
+                    Factories
                     <i class="bi bi-chevron-right"></i>
                 </a>
             
@@ -461,15 +534,19 @@ Aliases still work, as long as the alias points to a service registered under it
             <ul class="toc__list">
             
                 <li class="toc__entry">
-                    <a href="#attributedservicefactory" class="toc__link nav-link">AttributedServiceFactory</a>
+                    <a href="#the-same-service-both-ways" class="toc__link nav-link">The same service, both ways</a>
                 </li>
             
                 <li class="toc__entry">
-                    <a href="#attributedrepositoryfactory" class="toc__link nav-link">AttributedRepositoryFactory</a>
+                    <a href="#why-this-is-an-advantage" class="toc__link nav-link">Why this is an advantage</a>
                 </li>
             
                 <li class="toc__entry">
-                    <a href="#exception-hierarchy" class="toc__link nav-link">Exception hierarchy</a>
+                    <a href="#what-you-give-up" class="toc__link nav-link">What you give up</a>
+                </li>
+            
+                <li class="toc__entry">
+                    <a href="#when-to-keep-writing-a-factory" class="toc__link nav-link">When to keep writing a factory</a>
                 </li>
             
             </ul>
