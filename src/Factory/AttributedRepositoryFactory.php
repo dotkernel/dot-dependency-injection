@@ -14,12 +14,17 @@ use Psr\Container\NotFoundExceptionInterface;
 use ReflectionClass;
 
 use function class_exists;
+use function is_a;
 
+/**
+ * Creates a Doctrine entity repository based on the #[Entity] attribute of the requested class.
+ */
 class AttributedRepositoryFactory
 {
     /**
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
+     * @throws RuntimeException
      */
     public function __invoke(ContainerInterface $container, string $requestedName): EntityRepository
     {
@@ -29,6 +34,7 @@ class AttributedRepositoryFactory
     /**
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
+     * @throws RuntimeException
      */
     public function createObject(ContainerInterface $container, string $requestedName): EntityRepository
     {
@@ -46,18 +52,28 @@ class AttributedRepositoryFactory
             throw RuntimeException::attributeNotFound(Entity::class, $requestedName, static::class);
         }
 
-        return $container->get(EntityManagerInterface::class)->getRepository($entityAttribute->getName());
-    }
-
-    protected function findEntityAttribute(ReflectionClass $reflectionClass): ?Entity
-    {
-        $attributes = $reflectionClass->getAttributes();
-        foreach ($attributes as $attribute) {
-            if ($attribute->getName() === Entity::class) {
-                return $attribute->newInstance();
-            }
+        $entityName = $entityAttribute->getName();
+        if (! class_exists($entityName)) {
+            throw RuntimeException::classNotFound($entityName);
         }
 
-        return null;
+        $repository = $container->get(EntityManagerInterface::class)->getRepository($entityName);
+        if (! is_a($repository, $requestedName)) {
+            throw RuntimeException::unexpectedRepository($repository::class, $requestedName, $entityName);
+        }
+
+        return $repository;
+    }
+
+    /**
+     * @template T of object
+     * @param ReflectionClass<T> $reflectionClass
+     */
+    protected function findEntityAttribute(ReflectionClass $reflectionClass): ?Entity
+    {
+        $attribute = $reflectionClass->getAttributes(Entity::class)[0] ?? null;
+        $instance  = $attribute?->newInstance();
+
+        return $instance instanceof Entity ? $instance : null;
     }
 }

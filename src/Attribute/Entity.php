@@ -6,14 +6,20 @@ namespace Dot\DependencyInjection\Attribute;
 
 use Attribute;
 
-#[Attribute]
+/**
+ * Marks a Doctrine entity repository as belonging to the given entity.
+ *
+ * Read by {@see \Dot\DependencyInjection\Factory\AttributedRepositoryFactory}.
+ */
+#[Attribute(Attribute::TARGET_CLASS)]
 class Entity
 {
-    private string $name;
-
-    public function __construct(string $name)
+    /**
+     * @param string $name FQCN of the entity the annotated repository manages.
+     *                     Validated at runtime by AttributedRepositoryFactory.
+     */
+    public function __construct(private readonly string $name)
     {
-        $this->name = $name;
     }
 
     public function getName(): string
