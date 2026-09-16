@@ -134,7 +134,7 @@ Anyone opening the class sees what it needs and where each dependency comes from
 Being explicit about the trade-offs matters more than the line count.
 
 | | Hand-written factory | `#[Inject]` |
-|---|---|---|
+| --- | --- | --- |
 | Wiring is checked by the type system | yes, `new UserService(...)` is analysed | no, names are strings resolved at runtime |
 | Order of arguments verified statically | yes | no, the attribute order must match the constructor |
 | Reflection at build time | none | one `ReflectionClass` per service creation, not cached |

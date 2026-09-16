@@ -9,7 +9,7 @@ See [Attributes vs. factories](https://docs.dotkernel.org/dot-dependency-injecti
 
 ## Documentation
 
-Documentation is available at: https://docs.dotkernel.org/dot-dependency-injection/.
+Documentation is available at: <https://docs.dotkernel.org/dot-dependency-injection/>.
 
 - [Installation](https://docs.dotkernel.org/dot-dependency-injection/v1/installation/)
 - [Configuration](https://docs.dotkernel.org/dot-dependency-injection/v1/configuration/)
@@ -151,9 +151,8 @@ class Example
 }
 ```
 
-> Dependencies injected via the `#[Entity]`/`#[Inject]` attributes are not cached
-
-> Injecting dependencies into property setters is not supported
+> Dependencies injected via the `#[Entity]`/`#[Inject]` attributes are not cached.
+> Injecting dependencies into property setters is not supported.
 
 ## Quality assurance
 

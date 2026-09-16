@@ -2,9 +2,9 @@
 
 ## Supported Versions
 
-| Version | Supported          | PHP Version                                                                                                              |
-|---------|--------------------|--------------------------------------------------------------------------------------------------------------------------|
-| 1.x     | :white_check_mark: | ![PHP from Packagist (specify version)](https://img.shields.io/packagist/php-v/dotkernel/dot-dependency-injection/1.4.0) |
+| Version | Supported | PHP Version |
+| --- | --- | --- |
+| 1.x | :white_check_mark: | ![PHP from Packagist (specify version)](https://img.shields.io/packagist/php-v/dotkernel/dot-dependency-injection/1.4.0) |
 
 ## Reporting Potential Security Issues
 
@@ -22,5 +22,6 @@ We request that you contact us via the email address above and give the project 
 ## Policy
 
 If we verify a reported security vulnerability, our policy is:
+
 - We will patch the current release branch, as well as the immediate prior minor release branch.
 - After patching the release branches, we will immediately issue new security fix releases for each patched release branch.

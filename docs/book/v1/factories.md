@@ -30,7 +30,7 @@ Resolution of a single dependency happens as follows:
 
 A class whose constructor has no parameters at all does not need the `#[Inject]` attribute: if the requested class has no constructor, it is instantiated directly.
 
-### Exceptions thrown
+### Exceptions thrown by AttributedServiceFactory
 
 - `Dot\DependencyInjection\Exception\RuntimeException` if the requested class does not exist
 - `Dot\DependencyInjection\Exception\RuntimeException` if the requested class has a constructor without the `#[Inject]` attribute
@@ -54,7 +54,7 @@ Since Doctrine decides which repository class to build from the mapping of the e
 
 If it does not, Doctrine returns its default repository and the factory throws a `RuntimeException` instead of handing back an object of an unexpected type.
 
-### Exceptions thrown
+### Exceptions thrown by AttributedRepositoryFactory
 
 - `Dot\DependencyInjection\Exception\RuntimeException` if the repository class does not exist
 - `Dot\DependencyInjection\Exception\RuntimeException` if the repository class does not extend `Doctrine\ORM\EntityRepository`
@@ -76,7 +76,7 @@ try {
 }
 ```
 
-| Exception                  | Extends                      | Meaning                                                  |
-|----------------------------|------------------------------|----------------------------------------------------------|
-| `RuntimeException`         | `\RuntimeException`          | the class or service graph cannot be built as declared   |
-| `InvalidArgumentException` | `\InvalidArgumentException`  | a dot-separated dependency points to a missing array key |
+| Exception | Extends | Meaning |
+| --- | --- | --- |
+| `RuntimeException` | `\RuntimeException` | the class or service graph cannot be built as declared |
+| `InvalidArgumentException` | `\InvalidArgumentException` | a dot-separated dependency points to a missing array key |
