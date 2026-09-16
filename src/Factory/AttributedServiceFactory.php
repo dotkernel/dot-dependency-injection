@@ -14,21 +14,24 @@ use Psr\Container\NotFoundExceptionInterface;
 use ReflectionClass;
 use ReflectionMethod;
 
+use function array_key_exists;
 use function array_shift;
 use function class_exists;
 use function count;
 use function explode;
 use function in_array;
 use function is_array;
-use function sprintf;
 
+/**
+ * Creates any class based on the #[Inject] attribute of its constructor.
+ */
 class AttributedServiceFactory
 {
-    protected string $originalKey;
-
     /**
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
+     * @throws RuntimeException
+     * @throws InvalidArgumentException
      */
     public function __invoke(ContainerInterface $container, string $requestedName): mixed
     {
@@ -38,6 +41,8 @@ class AttributedServiceFactory
     /**
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
+     * @throws RuntimeException
+     * @throws InvalidArgumentException
      */
     public function createObject(ContainerInterface $container, string $requestedName): mixed
     {
@@ -66,19 +71,19 @@ class AttributedServiceFactory
 
     protected function findInjectAttribute(ReflectionMethod $constructor): ?Inject
     {
-        $attributes = $constructor->getAttributes();
-        foreach ($attributes as $attribute) {
-            if ($attribute->getName() === Inject::class) {
-                return $attribute->newInstance();
-            }
-        }
+        $attribute = $constructor->getAttributes(Inject::class)[0] ?? null;
+        $instance  = $attribute?->newInstance();
 
-        return null;
+        return $instance instanceof Inject ? $instance : null;
     }
 
     /**
+     * @param list<string> $parameters
+     * @return list<mixed>
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
+     * @throws RuntimeException
+     * @throws InvalidArgumentException
      */
     protected function getServicesToInject(ContainerInterface $container, array $parameters): array
     {
@@ -94,47 +99,70 @@ class AttributedServiceFactory
     /**
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
+     * @throws RuntimeException
+     * @throws InvalidArgumentException
      */
     protected function getServiceToInject(ContainerInterface $container, string $serviceKey): mixed
     {
-        $this->originalKey = $serviceKey;
-
         /**
          * Even when dots are found, try to find a service with the full name.
          * If it is not found, then assume dots are used to get part of an array service
          */
-        $parts = explode('.', $serviceKey);
+        $parts      = explode('.', $serviceKey);
+        $identifier = $serviceKey;
         if (count($parts) > 1 && ! $container->has($serviceKey)) {
-            $serviceKey = array_shift($parts);
+            $identifier = array_shift($parts);
         } else {
             $parts = [];
         }
 
-        if ($container->has($serviceKey)) {
-            $service = $container->get($serviceKey);
-        } elseif (class_exists($serviceKey)) {
-            $service = new $serviceKey();
+        if ($container->has($identifier)) {
+            $service = $container->get($identifier);
+        } elseif (class_exists($identifier)) {
+            $service = new $identifier();
         } else {
-            throw RuntimeException::classNotFound($serviceKey);
+            throw RuntimeException::classNotFound($identifier);
         }
 
-        return empty($parts) ? $service : $this->readKeysFromArray($parts, $service);
+        return $parts === [] ? $service : $this->readKeysFromArray($parts, $service, $serviceKey);
     }
 
-    protected function readKeysFromArray(array $keys, mixed $array): mixed
+    /**
+     * @param non-empty-list<string> $keys
+     * @throws InvalidArgumentException
+     */
+    protected function readKeysFromArray(array $keys, mixed $array, string $serviceKey): mixed
     {
         $key = array_shift($keys);
-        if (! isset($array[$key])) {
-            throw new InvalidArgumentException(
-                sprintf(InvalidArgumentException::MESSAGE_MISSING_KEY, $this->originalKey)
-            );
+        if (! $this->hasKey($array, $key)) {
+            throw InvalidArgumentException::missingKey($serviceKey);
         }
 
         $value = $array[$key];
-        if (! empty($keys) && (is_array($value) || $value instanceof ArrayAccess)) {
-            $value = $this->readKeysFromArray($keys, $value);
+        if ($keys === []) {
+            return $value;
         }
 
-        return $value;
+        if (! is_array($value) && ! $value instanceof ArrayAccess) {
+            throw InvalidArgumentException::missingKey($serviceKey);
+        }
+
+        return $this->readKeysFromArray($keys, $value, $serviceKey);
+    }
+
+    /**
+     * Unlike isset(), this does not treat a null value as a missing key.
+     */
+    protected function hasKey(mixed $array, string $key): bool
+    {
+        if (is_array($array)) {
+            return array_key_exists($key, $array);
+        }
+
+        if ($array instanceof ArrayAccess) {
+            return $array->offsetExists($key);
+        }
+
+        return false;
     }
 }

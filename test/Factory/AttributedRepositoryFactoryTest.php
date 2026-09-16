@@ -11,6 +11,7 @@ use Dot\DependencyInjection\Attribute\Entity;
 use Dot\DependencyInjection\Exception\RuntimeException;
 use Dot\DependencyInjection\Factory\AttributedRepositoryFactory;
 use DotTest\DependencyInjection\TestData\Entity as TestEntity;
+use DotTest\DependencyInjection\TestData\InvalidEntityRepository;
 use DotTest\DependencyInjection\TestData\Repository as TestRepository;
 use PHPUnit\Framework\MockObject\Exception;
 use PHPUnit\Framework\TestCase;
@@ -115,5 +116,63 @@ class AttributedRepositoryFactoryTest extends TestCase
 
         $repository = (new AttributedRepositoryFactory())($container, TestRepository::class);
         $this->assertInstanceOf(TestRepository::class, $repository);
+    }
+
+    /**
+     * @throws Exception
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function testWillThrowExceptionIfEntityClassNotFound(): void
+    {
+        $container = $this->createMock(ContainerInterface::class);
+
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage(
+            sprintf(
+                RuntimeException::MESSAGE_CLASS_NOT_FOUND,
+                'DotTest\\DependencyInjection\\TestData\\NotAnEntity'
+            )
+        );
+
+        (new AttributedRepositoryFactory())($container, InvalidEntityRepository::class);
+    }
+
+    /**
+     * @throws Exception
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function testWillThrowExceptionIfDoctrineReturnsAnotherRepository(): void
+    {
+        $entityManager = $this->createMock(EntityManagerInterface::class);
+        $container     = $this->createMock(ContainerInterface::class);
+
+        $metadata   = new ClassMetadata(TestEntity::class);
+        $repository = new class ($entityManager, $metadata) extends EntityRepository {
+        };
+
+        $container
+            ->expects($this->once())
+            ->method('get')
+            ->with(EntityManagerInterface::class)
+            ->willReturn($entityManager);
+        $entityManager
+            ->expects($this->once())
+            ->method('getRepository')
+            ->with(TestEntity::class)
+            ->willReturn($repository);
+
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage(
+            sprintf(
+                RuntimeException::MESSAGE_UNEXPECTED_REPOSITORY,
+                $repository::class,
+                TestRepository::class,
+                TestEntity::class
+            )
+        );
+
+        (new AttributedRepositoryFactory())($container, TestRepository::class);
     }
 }

@@ -8,14 +8,17 @@ use function sprintf;
 
 class RuntimeException extends \RuntimeException implements ExceptionInterface
 {
-    public const MESSAGE_ATTRIBUTE_NOT_FOUND =
+    public const MESSAGE_ATTRIBUTE_NOT_FOUND   =
         'You need to use the "%s" attribute on the "%s" class so that "%s" can create it.';
-    public const MESSAGE_CLASS_NOT_FOUND     =
+    public const MESSAGE_CLASS_NOT_FOUND       =
         'Defined injectable "%s" could not be found in container or as a class.';
-    public const MESSAGE_DOES_NOT_EXTEND     =
+    public const MESSAGE_DOES_NOT_EXTEND       =
         'Class "%s" must extend class "%s".';
-    public const MESSAGE_RECURSIVE_INJECT    =
+    public const MESSAGE_RECURSIVE_INJECT      =
         'Class "%s" can not be injected into itself.';
+    public const MESSAGE_UNEXPECTED_REPOSITORY =
+        'Doctrine returned an instance of "%s" instead of "%s". '
+        . 'Make sure that entity "%s" declares #[ORM\Entity(repositoryClass: ...)] pointing to it.';
 
     public static function classNotFound(string $requestedName): self
     {
@@ -35,5 +38,10 @@ class RuntimeException extends \RuntimeException implements ExceptionInterface
     public static function recursiveInject(string $requestedName): self
     {
         return new self(sprintf(self::MESSAGE_RECURSIVE_INJECT, $requestedName));
+    }
+
+    public static function unexpectedRepository(string $actual, string $requestedName, string $entity): self
+    {
+        return new self(sprintf(self::MESSAGE_UNEXPECTED_REPOSITORY, $actual, $requestedName, $entity));
     }
 }

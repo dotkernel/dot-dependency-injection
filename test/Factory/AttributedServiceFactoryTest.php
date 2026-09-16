@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace DotTest\DependencyInjection\Factory;
 
+use ArrayObject;
 use Dot\DependencyInjection\Attribute\Inject;
 use Dot\DependencyInjection\Exception\InvalidArgumentException;
 use Dot\DependencyInjection\Exception\RuntimeException;
@@ -124,7 +125,7 @@ class AttributedServiceFactoryTest extends TestCase
         $subject = new class
         {
             #[Inject('config.uration.key')]
-            public function __construct(array $config = [])
+            public function __construct(public array $config = [])
             {
             }
         };
@@ -149,7 +150,7 @@ class AttributedServiceFactoryTest extends TestCase
         $subject = new class
         {
             #[Inject('test')]
-            public function __construct(mixed $test = null)
+            public function __construct(public mixed $test = null)
             {
             }
         };
@@ -208,5 +209,161 @@ class AttributedServiceFactoryTest extends TestCase
 
         $service = (new AttributedServiceFactory())($container, $subject::class);
         $this->assertInstanceOf(ValidService::class, $service);
+    }
+
+    /**
+     * @throws ContainerExceptionInterface
+     * @throws Exception
+     * @throws NotFoundExceptionInterface
+     */
+    public function testWillInjectNullValueFromDottedNotation(): void
+    {
+        $container = $this->createMock(ContainerInterface::class);
+        $container->expects($this->any())->method('has')->willReturnCallback(
+            fn (string $key): bool => $key === 'config',
+        );
+        $container->expects($this->any())->method('get')->willReturn(['debug' => null]);
+
+        $subject = new class {
+            #[Inject('config.debug')]
+            public function __construct(public mixed $debug = 'not injected')
+            {
+            }
+        };
+
+        $service = (new AttributedServiceFactory())($container, $subject::class);
+        $this->assertNull($service->debug);
+    }
+
+    /**
+     * @throws ContainerExceptionInterface
+     * @throws Exception
+     * @throws NotFoundExceptionInterface
+     */
+    public function testWillThrowExceptionIfDottedNotationOvershootsAScalar(): void
+    {
+        $container = $this->createMock(ContainerInterface::class);
+        $container->expects($this->any())->method('has')->willReturnCallback(
+            fn (string $key): bool => $key === 'config',
+        );
+        $container->expects($this->any())->method('get')->willReturn(['debug' => true]);
+
+        $subject = new class {
+            #[Inject('config.debug.verbose')]
+            public function __construct(public mixed $verbose = null)
+            {
+            }
+        };
+
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            sprintf(InvalidArgumentException::MESSAGE_MISSING_KEY, 'config.debug.verbose')
+        );
+
+        (new AttributedServiceFactory())($container, $subject::class);
+    }
+
+    /**
+     * @throws ContainerExceptionInterface
+     * @throws Exception
+     * @throws NotFoundExceptionInterface
+     */
+    public function testWillReadDottedNotationFromArrayAccessService(): void
+    {
+        $container = $this->createMock(ContainerInterface::class);
+        $container->expects($this->any())->method('has')->willReturnCallback(
+            fn (string $key): bool => $key === 'config',
+        );
+        $container->expects($this->any())->method('get')->willReturn(
+            new ArrayObject(['nested' => new ArrayObject(['value' => 'injected'])])
+        );
+
+        $subject = new class {
+            #[Inject('config.nested.value')]
+            public function __construct(public ?string $value = null)
+            {
+            }
+        };
+
+        $service = (new AttributedServiceFactory())($container, $subject::class);
+        $this->assertSame('injected', $service->value);
+    }
+
+    /**
+     * @throws ContainerExceptionInterface
+     * @throws Exception
+     * @throws NotFoundExceptionInterface
+     */
+    public function testWillPreferAServiceNamedLikeTheDottedKey(): void
+    {
+        $container = $this->createMock(ContainerInterface::class);
+        $container->expects($this->any())->method('has')->willReturnCallback(
+            fn (string $key): bool => $key === 'config.debug',
+        );
+        $container
+            ->expects($this->once())
+            ->method('get')
+            ->with('config.debug')
+            ->willReturn(['full-service']);
+
+        $subject = new class {
+            #[Inject('config.debug')]
+            public function __construct(public array $debug = [])
+            {
+            }
+        };
+
+        $service = (new AttributedServiceFactory())($container, $subject::class);
+        $this->assertSame(['full-service'], $service->debug);
+    }
+
+    /**
+     * @throws ContainerExceptionInterface
+     * @throws Exception
+     * @throws NotFoundExceptionInterface
+     */
+    public function testWillInstantiateAnUnregisteredClassDependency(): void
+    {
+        $container = $this->createMock(ContainerInterface::class);
+        $container->expects($this->any())->method('has')->willReturn(false);
+        $container->expects($this->never())->method('get');
+
+        $subject = new class {
+            #[Inject(ValidService::class)]
+            public function __construct(public ?ValidService $service = null)
+            {
+            }
+        };
+
+        $service = (new AttributedServiceFactory())($container, $subject::class);
+        $this->assertInstanceOf(ValidService::class, $service->service);
+    }
+
+    /**
+     * @throws ContainerExceptionInterface
+     * @throws Exception
+     * @throws NotFoundExceptionInterface
+     */
+    public function testWillThrowExceptionIfDottedNotationIsUsedOnANonArrayService(): void
+    {
+        $container = $this->createMock(ContainerInterface::class);
+        $container->expects($this->any())->method('has')->willReturnCallback(
+            fn (string $key): bool => $key === 'version',
+        );
+        $container->expects($this->any())->method('get')->willReturn('1.0.0');
+
+        $subject = new class {
+            #[Inject('version.major')]
+            public function __construct(public mixed $major = null)
+            {
+            }
+        };
+
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            sprintf(InvalidArgumentException::MESSAGE_MISSING_KEY, 'version.major')
+        );
+
+        (new AttributedServiceFactory())($container, $subject::class);
     }
 }
