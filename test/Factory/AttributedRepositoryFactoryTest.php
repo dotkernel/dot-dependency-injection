@@ -29,6 +29,27 @@ class AttributedRepositoryFactoryTest extends TestCase
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
+    public function testWillThrowExceptionIfOrmIsNotInstalled(): void
+    {
+        $factory = new class extends AttributedRepositoryFactory {
+            protected function isOrmInstalled(): bool
+            {
+                return false;
+            }
+        };
+
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage(
+            sprintf(RuntimeException::MESSAGE_MISSING_PACKAGE, 'doctrine/orm', $factory::class)
+        );
+
+        $factory(new Container(), TestRepository::class);
+    }
+
+    /**
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
     public function testWillThrowExceptionIfClassNotFound(): void
     {
         $this->expectException(RuntimeException::class);

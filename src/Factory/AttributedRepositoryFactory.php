@@ -41,7 +41,7 @@ class AttributedRepositoryFactory
      */
     public function createObject(ContainerInterface $container, string $requestedName): EntityRepository
     {
-        if (! class_exists(EntityRepository::class)) {
+        if (! $this->isOrmInstalled()) {
             throw RuntimeException::missingPackage('doctrine/orm', static::class);
         }
 
@@ -91,5 +91,13 @@ class AttributedRepositoryFactory
         $instance  = $attribute?->newInstance();
 
         return $instance instanceof Entity ? $instance : null;
+    }
+
+    /**
+     * doctrine/orm is only suggested by this package, so it may be missing from the application.
+     */
+    protected function isOrmInstalled(): bool
+    {
+        return class_exists(EntityRepository::class);
     }
 }
