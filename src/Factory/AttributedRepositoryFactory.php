@@ -14,6 +14,7 @@ use Psr\Container\NotFoundExceptionInterface;
 use ReflectionClass;
 
 use function class_exists;
+use function get_debug_type;
 use function is_a;
 
 /**
@@ -22,6 +23,7 @@ use function is_a;
 class AttributedRepositoryFactory
 {
     /**
+     * @return EntityRepository<object>
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      * @throws RuntimeException
@@ -32,12 +34,17 @@ class AttributedRepositoryFactory
     }
 
     /**
+     * @return EntityRepository<object>
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      * @throws RuntimeException
      */
     public function createObject(ContainerInterface $container, string $requestedName): EntityRepository
     {
+        if (! class_exists(EntityRepository::class)) {
+            throw RuntimeException::missingPackage('doctrine/orm', static::class);
+        }
+
         if (! class_exists($requestedName)) {
             throw RuntimeException::classNotFound($requestedName);
         }
@@ -57,7 +64,16 @@ class AttributedRepositoryFactory
             throw RuntimeException::classNotFound($entityName);
         }
 
-        $repository = $container->get(EntityManagerInterface::class)->getRepository($entityName);
+        $entityManager = $container->get(EntityManagerInterface::class);
+        if (! $entityManager instanceof EntityManagerInterface) {
+            throw RuntimeException::invalidService(
+                EntityManagerInterface::class,
+                EntityManagerInterface::class,
+                get_debug_type($entityManager)
+            );
+        }
+
+        $repository = $entityManager->getRepository($entityName);
         if (! is_a($repository, $requestedName)) {
             throw RuntimeException::unexpectedRepository($repository::class, $requestedName, $entityName);
         }

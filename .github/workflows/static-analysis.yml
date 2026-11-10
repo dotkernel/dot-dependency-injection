@@ -4,7 +4,7 @@ on:
 name: Run PHPStan checks
 
 jobs:
-  mutation:
+  static-analysis:
     name: PHPStan ${{ matrix.php }}-${{ matrix.os }}
 
     runs-on: ${{ matrix.os }}
@@ -18,6 +18,7 @@ jobs:
           - "8.3"
           - "8.4"
           - "8.5"
+          - "8.6"
 
     steps:
       - name: Checkout
@@ -27,7 +28,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: "${{ matrix.php }}"
-          coverage: pcov
+          coverage: none
           ini-values: assert.exception=1, zend.assertions=1, error_reporting=-1, log_errors_max_len=0, display_errors=On
           tools: composer:v2, cs2pr
 
