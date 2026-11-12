@@ -5,40 +5,48 @@
 Instead of a hand-written factory class per service, you declare a class's dependencies with the `#[Inject]` attribute on its constructor - or a repository's entity with `#[Entity]` - and register one of the two reusable factories this package ships.
 That removes an entire category of boilerplate files from a project and keeps the dependency list next to the constructor it feeds.
 
-See [Attributes vs. factories](https://docs.dotkernel.org/dot-dependency-injection/v1/attributes-vs-factories/) for the full comparison and the trade-offs.
+See [Attributes vs. factories](https://docs.dotkernel.org/dot-dependency-injection/v2/attributes-vs-factories/) for the full comparison and the trade-offs.
 
 ## Documentation
 
 Documentation is available at: <https://docs.dotkernel.org/dot-dependency-injection/>.
 
-- [Installation](https://docs.dotkernel.org/dot-dependency-injection/v1/installation/)
-- [Configuration](https://docs.dotkernel.org/dot-dependency-injection/v1/configuration/)
-- [Attributes vs. factories](https://docs.dotkernel.org/dot-dependency-injection/v1/attributes-vs-factories/)
-- [Factories](https://docs.dotkernel.org/dot-dependency-injection/v1/factories/)
-- [Inject class dependencies](https://docs.dotkernel.org/dot-dependency-injection/v1/factories/service/)
-- [Inject entity repositories](https://docs.dotkernel.org/dot-dependency-injection/v1/factories/repository/)
-- [FAQ](https://docs.dotkernel.org/dot-dependency-injection/v1/faq/)
+- [Installation](https://docs.dotkernel.org/dot-dependency-injection/v2/installation/)
+- [Configuration](https://docs.dotkernel.org/dot-dependency-injection/v2/configuration/)
+- [Attributes vs. factories](https://docs.dotkernel.org/dot-dependency-injection/v2/attributes-vs-factories/)
+- [Factories](https://docs.dotkernel.org/dot-dependency-injection/v2/factories/)
+- [Inject class dependencies](https://docs.dotkernel.org/dot-dependency-injection/v2/factories/service/)
+- [Inject entity repositories](https://docs.dotkernel.org/dot-dependency-injection/v2/factories/repository/)
+- [FAQ](https://docs.dotkernel.org/dot-dependency-injection/v2/faq/)
+- [Upgrading from 1.x](https://docs.dotkernel.org/dot-dependency-injection/v2/upgrading/)
+
+## Versions
+
+| Version | Branch | PHP | Status | Documentation |
+| --- | --- | --- | --- | --- |
+| 2.x | `2.0` | 8.3, 8.4, 8.5, 8.6 | active | [v2](https://docs.dotkernel.org/dot-dependency-injection/v2/overview/) |
+| 1.x | `1.0` | 8.3, 8.4, 8.5 | supported | [v1](https://docs.dotkernel.org/dot-dependency-injection/v1/overview/) |
 
 ## Badges
 
 ![OSS Lifecycle](https://img.shields.io/osslifecycle/dotkernel/dot-dependency-injection)
-![PHP from Packagist (specify version)](https://img.shields.io/packagist/php-v/dotkernel/dot-dependency-injection/1.4.1)
+![PHP from Packagist (specify version)](https://img.shields.io/packagist/php-v/dotkernel/dot-dependency-injection/2.0.0)
 
 [![GitHub issues](https://img.shields.io/github/issues/dotkernel/dot-dependency-injection)](https://github.com/dotkernel/dot-dependency-injection/issues)
 [![GitHub forks](https://img.shields.io/github/forks/dotkernel/dot-dependency-injection)](https://github.com/dotkernel/dot-dependency-injection/network)
 [![GitHub stars](https://img.shields.io/github/stars/dotkernel/dot-dependency-injection)](https://github.com/dotkernel/dot-dependency-injection/stargazers)
-[![GitHub license](https://img.shields.io/github/license/dotkernel/dot-dependency-injection)](https://github.com/dotkernel/dot-dependency-injection/blob/1.0/LICENSE.md)
+[![GitHub license](https://img.shields.io/github/license/dotkernel/dot-dependency-injection)](https://github.com/dotkernel/dot-dependency-injection/blob/2.0/LICENSE.md)
 
-[![Build Static](https://github.com/dotkernel/dot-dependency-injection/actions/workflows/continuous-integration.yml/badge.svg?branch=1.0)](https://github.com/dotkernel/dot-dependency-injection/actions/workflows/continuous-integration.yml)
+[![Build Static](https://github.com/dotkernel/dot-dependency-injection/actions/workflows/continuous-integration.yml/badge.svg?branch=2.0)](https://github.com/dotkernel/dot-dependency-injection/actions/workflows/continuous-integration.yml)
 [![codecov](https://codecov.io/gh/dotkernel/dot-dependency-injection/graph/badge.svg?token=DayAoD2Oj6)](https://codecov.io/gh/dotkernel/dot-dependency-injection)
 [![docs-build](https://github.com/dotkernel/dot-dependency-injection/actions/workflows/docs-build.yml/badge.svg)](https://github.com/dotkernel/dot-dependency-injection/actions/workflows/docs-build.yml)
-[![PHPStan](https://github.com/dotkernel/dot-dependency-injection/actions/workflows/static-analysis.yml/badge.svg?branch=1.0)](https://github.com/dotkernel/dot-dependency-injection/actions/workflows/static-analysis.yml)
+[![PHPStan](https://github.com/dotkernel/dot-dependency-injection/actions/workflows/static-analysis.yml/badge.svg?branch=2.0)](https://github.com/dotkernel/dot-dependency-injection/actions/workflows/static-analysis.yml)
 
 ## Requirements
 
-- PHP 8.3, 8.4 or 8.5
-- a PSR-11 container, usually `laminas/laminas-servicemanager`
-- `doctrine/orm` ^2.9 || ^3.0, if you use `AttributedRepositoryFactory`
+- PHP 8.3, 8.4, 8.5 or 8.6
+- a PSR-11 container (`psr/container` ^1.1 || ^2.0), usually `laminas/laminas-servicemanager`
+- `doctrine/orm` ^2.9 || ^3.0, installed by your application, if you use `AttributedRepositoryFactory`
 
 ## Installation
 
@@ -94,7 +102,8 @@ public function __construct(
 
 The `#[Inject]` attribute is telling `AttributedServiceFactory` to inject the services specified as parameters, in the same order as the constructor parameters.
 Valid service names should be provided, as registered in the service manager.
-A name that is not registered in the container, but is an existing class, is instantiated directly.
+A name that is not registered in the container, but is a class that can be instantiated without arguments, is instantiated directly.
+The number of entries is checked against the constructor; trailing parameters with a default value may be left out.
 
 A class without a constructor does not need the attribute.
 
@@ -112,6 +121,12 @@ which will inject `$container->get('config')['debug'];`.
 > Only the segment before the first dot is resolved from the container; the rest are array keys, and arrays as well as `ArrayAccess` objects can be traversed.
 
 ### Using the AttributedRepositoryFactory
+
+`AttributedRepositoryFactory` needs `doctrine/orm`, which this package does not install:
+
+```shell
+composer require doctrine/orm
+```
 
 You can register doctrine repositories and inject them using the `AttributedRepositoryFactory` as below:
 

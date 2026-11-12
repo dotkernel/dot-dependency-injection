@@ -28,12 +28,6 @@ use function is_array;
 class AttributedServiceFactory
 {
     /**
-     * Retained for backwards compatibility with subclasses overriding readKeysFromArray().
-     * Assigned immediately before the call, so a nested service creation cannot overwrite it.
-     */
-    protected string $originalKey = '';
-
-    /**
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      * @throws RuntimeException
@@ -56,9 +50,14 @@ class AttributedServiceFactory
             throw RuntimeException::classNotFound($requestedName);
         }
 
-        $constructor = (new ReflectionClass($requestedName))->getConstructor();
+        $reflectionClass = new ReflectionClass($requestedName);
+        if (! $reflectionClass->isInstantiable()) {
+            throw RuntimeException::notInstantiable($requestedName);
+        }
+
+        $constructor = $reflectionClass->getConstructor();
         if ($constructor === null) {
-            return new $requestedName();
+            return $reflectionClass->newInstance();
         }
 
         $injectAttribute = $this->findInjectAttribute($constructor);
@@ -66,13 +65,25 @@ class AttributedServiceFactory
             throw RuntimeException::attributeNotFound(Inject::class, $requestedName, static::class);
         }
 
-        if (in_array($requestedName, $injectAttribute->getServices(), true)) {
+        $serviceKeys = $injectAttribute->getServices();
+        if (in_array($requestedName, $serviceKeys, true)) {
             throw RuntimeException::recursiveInject($requestedName);
         }
 
-        $services = $this->getServicesToInject($container, $injectAttribute->getServices());
+        $count = count($serviceKeys);
+        if (
+            $count < $constructor->getNumberOfRequiredParameters()
+            || (! $constructor->isVariadic() && $count > $constructor->getNumberOfParameters())
+        ) {
+            throw RuntimeException::argumentCountMismatch(
+                $requestedName,
+                $count,
+                $constructor->getNumberOfRequiredParameters(),
+                $constructor->getNumberOfParameters()
+            );
+        }
 
-        return new $requestedName(...$services);
+        return $reflectionClass->newInstanceArgs($this->getServicesToInject($container, $serviceKeys));
     }
 
     protected function findInjectAttribute(ReflectionMethod $constructor): ?Inject
@@ -114,69 +125,67 @@ class AttributedServiceFactory
          * Even when dots are found, try to find a service with the full name.
          * If it is not found, then assume dots are used to get part of an array service
          */
-        $parts      = explode('.', $serviceKey);
-        $identifier = $serviceKey;
-        if (count($parts) > 1 && ! $container->has($serviceKey)) {
-            $identifier = array_shift($parts);
-        } else {
-            $parts = [];
+        if ($container->has($serviceKey)) {
+            return $container->get($serviceKey);
+        }
+
+        $keys       = explode('.', $serviceKey);
+        $identifier = array_shift($keys);
+        if (in_array('', $keys, true) || ($keys !== [] && $identifier === '')) {
+            throw InvalidArgumentException::emptySegment($serviceKey);
         }
 
         if ($container->has($identifier)) {
             $service = $container->get($identifier);
-        } elseif (class_exists($identifier)) {
+        } elseif ($this->canInstantiateWithoutArguments($identifier)) {
             $service = new $identifier();
+        } elseif (class_exists($identifier)) {
+            throw RuntimeException::dependencyNotInstantiable($identifier);
         } else {
             throw RuntimeException::classNotFound($identifier);
         }
 
-        if ($parts === []) {
+        if ($keys === []) {
             return $service;
         }
 
-        $this->originalKey = $serviceKey;
-
-        return $this->readKeysFromArray($parts, $service);
+        return $this->readKeysFromArray($keys, $service, $serviceKey);
     }
 
     /**
      * @param non-empty-list<string> $keys
+     * @param string $serviceKey The full dotted key, used in the exception message.
      * @throws InvalidArgumentException
      */
-    protected function readKeysFromArray(array $keys, mixed $array): mixed
+    protected function readKeysFromArray(array $keys, mixed $array, string $serviceKey): mixed
     {
-        $key = array_shift($keys);
-        if (! $this->hasKey($array, $key)) {
-            throw InvalidArgumentException::missingKey($this->originalKey);
+        foreach ($keys as $key) {
+            if (is_array($array) && array_key_exists($key, $array)) {
+                $array = $array[$key];
+                continue;
+            }
+
+            if ($array instanceof ArrayAccess && $array->offsetExists($key)) {
+                $array = $array[$key];
+                continue;
+            }
+
+            throw InvalidArgumentException::missingKey($serviceKey);
         }
 
-        $value = $array[$key];
-        if ($keys === []) {
-            return $value;
-        }
-
-        if (! is_array($value) && ! $value instanceof ArrayAccess) {
-            throw InvalidArgumentException::missingKey($this->originalKey);
-        }
-
-        return $this->readKeysFromArray($keys, $value);
+        return $array;
     }
 
-    /**
-     * Unlike isset(), this does not treat a null value as a missing key.
-     *
-     * Private so that it cannot collide with a method of the same name in a subclass.
-     */
-    private function hasKey(mixed $array, string $key): bool
+    private function canInstantiateWithoutArguments(string $class): bool
     {
-        if (is_array($array)) {
-            return array_key_exists($key, $array);
+        if (! class_exists($class)) {
+            return false;
         }
 
-        if ($array instanceof ArrayAccess) {
-            return $array->offsetExists($key);
-        }
+        $reflectionClass = new ReflectionClass($class);
+        $constructor     = $reflectionClass->getConstructor();
 
-        return false;
+        return $reflectionClass->isInstantiable()
+            && ($constructor === null || $constructor->getNumberOfRequiredParameters() === 0);
     }
 }
