@@ -19,7 +19,7 @@ composer require dotkernel/dot-dependency-injection:^2.0
 
 | Change | Symptom | Fix |
 | --- | --- | --- |
-| `doctrine/orm` is no longer installed by this package | `"Dot\DependencyInjection\Factory\AttributedRepositoryFactory" requires "doctrine/orm"`, or `Class "Doctrine\ORM\..." not found` in your own code | `composer require doctrine/orm` |
+| `doctrine/orm` is no longer installed by this package | `"Dot\DependencyInjection\Factory\AttributedRepositoryFactory" requires "doctrine/orm"`, or `Class "Doctrine\ORM\..." not found` in your own code | `composer require doctrine/orm`. If Composer asks to move it from `require-dev`, see [Composer asks to move the ORM requirement](installation.md#composer-asks-to-move-the-orm-requirement) |
 | `doctrine/orm` 4 is blocked by a `conflict` rule | Composer refuses to resolve | stay on `doctrine/orm` ^2.9 or ^3.0 |
 | `psr/container` 1.0 is no longer supported | Composer refuses to resolve | update `psr/container` to 1.1 or 2.x |
 | `AttributedServiceFactory::$originalKey` was removed | `Undefined property` in a subclass of the factory | use the `$serviceKey` parameter of `readKeysFromArray()` |

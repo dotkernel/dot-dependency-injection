@@ -6,6 +6,8 @@
 composer require doctrine/orm
 ```
 
+If Composer asks to move `doctrine/orm` from `require-dev` to `require`, see [Composer asks to move the ORM requirement](../installation.md#composer-asks-to-move-the-orm-requirement).
+
 Without it, the factory throws a `Dot\DependencyInjection\Exception\RuntimeException` that names the missing package.
 
 ## Prepare entity

@@ -128,6 +128,8 @@ which will inject `$container->get('config')['debug'];`.
 composer require doctrine/orm
 ```
 
+If Composer asks to move `doctrine/orm` from `require-dev` to `require`, see [Composer asks to move the ORM requirement](https://docs.dotkernel.org/dot-dependency-injection/v2/installation/#composer-asks-to-move-the-orm-requirement).
+
 You can register doctrine repositories and inject them using the `AttributedRepositoryFactory` as below:
 
 ```php

@@ -21,4 +21,12 @@ If you use `AttributedRepositoryFactory`, require it in your application:
 composer require doctrine/orm
 ```
 
+### Composer asks to move the ORM requirement
+
+If your application lists `doctrine/orm` under `require-dev`, Composer asks to move it to `require`.
+Answer `yes`.
+`AttributedRepositoryFactory` runs in production, and `composer install --no-dev` does not install `require-dev` packages.
+With `--no-interaction`, Composer moves the entry to `require` without asking.
+If your application already lists `doctrine/orm` under `require`, you do not have to do anything.
+
 Upgrading from 1.x? See [Upgrading from 1.x](upgrading.md).

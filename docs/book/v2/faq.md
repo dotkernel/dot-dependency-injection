@@ -134,6 +134,7 @@ Register the repository with `AttributedRepositoryFactory`, then list it like an
 
 No.
 Install it yourself (`composer require doctrine/orm`) only if you use `AttributedRepositoryFactory`.
+If Composer asks to move it from `require-dev` to `require`, see [Composer asks to move the ORM requirement](installation.md#composer-asks-to-move-the-orm-requirement).
 
 ### Is `#[Entity]` inherited by a subclass of my repository?
 
