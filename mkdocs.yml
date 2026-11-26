@@ -2,11 +2,24 @@ docs_dir: docs/book
 site_dir: docs/html
 extra:
   project: Packages
-  current_version: v1
+  current_version: v2
   versions:
+    - v2
     - v1
 nav:
   - Home: index.md
+  - v2:
+      - Overview: v2/overview.md
+      - Installation: v2/installation.md
+      - Configuration: v2/configuration.md
+      - Usage: v2/usage.md
+      - FAQ: v2/faq.md
+      - "Attributes vs. factories": v2/attributes-vs-factories.md
+      - Factories: v2/factories.md
+      - Reference:
+          - "Inject class dependencies": v2/factories/service.md
+          - "Inject entity repositories": v2/factories/repository.md
+      - "Upgrading from 1.x": v2/upgrading.md
   - v1:
       - Overview: v1/overview.md
       - Installation: v1/installation.md

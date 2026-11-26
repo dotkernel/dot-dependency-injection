@@ -37,6 +37,7 @@ composer.phar
 # You may choose to ignore a library lock file http://getcomposer.org/doc/02-libraries.md#lock-file
 composer.lock
 .phpunit.result.cache
+.phpunit.cache
 .phpcs-cache
 /documentation-theme/
 /docs/html/
