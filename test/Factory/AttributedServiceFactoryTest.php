@@ -11,6 +11,7 @@ use Dot\DependencyInjection\Exception\RuntimeException;
 use Dot\DependencyInjection\Factory\AttributedServiceFactory;
 use DotTest\DependencyInjection\TestData\RecursionService;
 use DotTest\DependencyInjection\TestData\ValidService;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\MockObject\Exception;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerExceptionInterface;
@@ -29,7 +30,7 @@ class AttributedServiceFactoryTest extends TestCase
      */
     public function testWillThrowExceptionIfClassNotFound(): void
     {
-        $container = $this->createMock(ContainerInterface::class);
+        $container = $this->createStub(ContainerInterface::class);
 
         $subject = 'test';
 
@@ -48,7 +49,7 @@ class AttributedServiceFactoryTest extends TestCase
      */
     public function testWillThrowExceptionIfAttributeNotFound(): void
     {
-        $container = $this->createMock(ContainerInterface::class);
+        $container = $this->createStub(ContainerInterface::class);
 
         $subject = new class {
             public function __construct()
@@ -76,7 +77,7 @@ class AttributedServiceFactoryTest extends TestCase
      */
     public function testWillThrowExceptionOnRecursiveInjection(): void
     {
-        $container = $this->createMock(ContainerInterface::class);
+        $container = $this->createStub(ContainerInterface::class);
 
         $subject = new RecursionService();
 
@@ -96,6 +97,7 @@ class AttributedServiceFactoryTest extends TestCase
      * @throws Exception
      * @throws NotFoundExceptionInterface
      */
+    #[AllowMockObjectsWithoutExpectations]
     public function testWillThrowExceptionIfDottedServiceNotFound(): void
     {
         $mapping = [
@@ -145,7 +147,7 @@ class AttributedServiceFactoryTest extends TestCase
      */
     public function testWillThrowExceptionIfDependencyNotFound(): void
     {
-        $container = $this->createMock(ContainerInterface::class);
+        $container = $this->createStub(ContainerInterface::class);
 
         $subject = new class
         {
@@ -170,7 +172,7 @@ class AttributedServiceFactoryTest extends TestCase
      */
     public function testWillCreateServiceIfNoConstructor(): void
     {
-        $container = $this->createMock(ContainerInterface::class);
+        $container = $this->createStub(ContainerInterface::class);
 
         $subject = new class {
         };
@@ -184,6 +186,7 @@ class AttributedServiceFactoryTest extends TestCase
      * @throws Exception
      * @throws NotFoundExceptionInterface
      */
+    #[AllowMockObjectsWithoutExpectations]
     public function testWillCreateService(): void
     {
         $mapping = [
@@ -216,6 +219,7 @@ class AttributedServiceFactoryTest extends TestCase
      * @throws Exception
      * @throws NotFoundExceptionInterface
      */
+    #[AllowMockObjectsWithoutExpectations]
     public function testWillInjectNullValueFromDottedNotation(): void
     {
         $container = $this->createMock(ContainerInterface::class);
@@ -240,6 +244,7 @@ class AttributedServiceFactoryTest extends TestCase
      * @throws Exception
      * @throws NotFoundExceptionInterface
      */
+    #[AllowMockObjectsWithoutExpectations]
     public function testWillThrowExceptionIfDottedNotationOvershootsAScalar(): void
     {
         $container = $this->createMock(ContainerInterface::class);
@@ -268,6 +273,7 @@ class AttributedServiceFactoryTest extends TestCase
      * @throws Exception
      * @throws NotFoundExceptionInterface
      */
+    #[AllowMockObjectsWithoutExpectations]
     public function testWillReadDottedNotationFromArrayAccessService(): void
     {
         $container = $this->createMock(ContainerInterface::class);
@@ -344,6 +350,7 @@ class AttributedServiceFactoryTest extends TestCase
      * @throws Exception
      * @throws NotFoundExceptionInterface
      */
+    #[AllowMockObjectsWithoutExpectations]
     public function testWillThrowExceptionIfDottedNotationIsUsedOnANonArrayService(): void
     {
         $container = $this->createMock(ContainerInterface::class);
