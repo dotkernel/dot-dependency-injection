@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <meta name="description" content="Dotkernel's dependency injection service">
+        
+        
+
+        
+        
+            
+        
+        <meta name="docsearch:version" content="2.0.0,latest">
+        <meta name="docsearch:language" content="en">
+        <meta name="docsearch:component" content="dot-dependency-injection">
+
+        <meta property="og:title"        content="Dotkernel Documentation"/>
+        <meta property="og:description"  content="Official Dotkernel documentation covering APIs, Admin, Queue, developer tools, packages, and modern PHP application development"/>
+        <meta property="og:image"        content="https://docs.dotkernel.org/img/open-graph/twitter-card-docs.png"/>
+        <meta property="og:type"         content="website"/>
+        <meta property="og:site_name"    content="Dotkernel Documentation"/>
+        <meta property="og:url"          content="https://docs.dotkernel.org/"/>
+        <meta property="og:locale"       content="en_US"/>
+        <meta name="twitter:card"        content="summary_large_image"/>
+        <meta name="twitter:site"        content="@dotkernel"/>
+        <meta name="twitter:title"       content="Dotkernel Documentation"/>
+        <meta name="twitter:description" content="Official Dotkernel documentation covering APIs, Admin, Queue, developer tools, packages, and modern PHP application development"/>
+        <meta name="twitter:image"       content="https://docs.dotkernel.org/img/open-graph/twitter-card-docs.png"/>
+
+        
+        <link rel="canonical" href="https://docs.dotkernel.org/dot-dependency-injection/v2/faq/">
+        
+        <link rel="shortcut icon" href="https://docs.dotkernel.org/img/dk_docs_favicon_white.svg">
+
+        <title>FAQ - dot-dependency-injection - Dotkernel Documentation</title>
+
+        <link rel="stylesheet" href="https://docs.dotkernel.org/css/bootstrap.css">
+        <link rel="stylesheet" href="https://docs.dotkernel.org/css/bootstrap-icons.min.css">
+        <link rel="stylesheet" href="https://docs.dotkernel.org/css/docs.css">
+        <script src="https://docs.dotkernel.org/js/bootstrap.js" defer></script>
+        <script src="https://docs.dotkernel.org/js/docs.js" defer></script>
+        <script src="https://docs.dotkernel.org/js/scripts.js" defer></script>
+    </head>
+    <body data-bs-spy="scroll" data-bs-target=".toc" data-bs-offset="100">
+
+        
+        <nav class="navbar navbar-expand-lg dk-docs-nav py-2" data-bs-theme="dark">
+    <div class="container-fluid dk-docs-nav__inner">
+        <a class="navbar-brand dk-docs-nav__brand" href="https://docs.dotkernel.org/">
+            <img alt="Dotkernel" class="d-inline-block align-text-top" height="28"
+                 src="https://docs.dotkernel.org/img/dk_logo_2024_white.svg" width="152"/>
+        </a>
+
+        <ul class="dk-docs-nav__projects list-unstyled d-none d-lg-flex align-items-center mb-0">
+            
+            <li class="">
+                <a href="https://docs.dotkernel.org/api-documentation/">API</a>
+            </li>
+            
+            <li class="">
+                <a href="https://docs.dotkernel.org/admin-documentation/">Admin</a>
+            </li>
+            
+            <li class="">
+                <a href="https://docs.dotkernel.org/frontend-documentation/">Frontend</a>
+            </li>
+            
+            <li class="">
+                <a href="https://docs.dotkernel.org/light-documentation/">Light</a>
+            </li>
+            
+            <li class="">
+                <a href="https://docs.dotkernel.org/queue-documentation/">Queue</a>
+            </li>
+            
+            <li class="dk-docs-nav__projects-item--active">
+                <a href="https://docs.dotkernel.org/packages/">Packages</a>
+            </li>
+            
+            <li class="">
+                <a href="https://docs.dotkernel.org/development/">Development</a>
+            </li>
+            
+            <li class="">
+                <a href="https://docs.dotkernel.org/headless-documentation/">Headless Platform</a>
+            </li>
+            
+            <li class="">
+                <a href="https://docs.dotkernel.org/dotboost/">Dotboost</a>
+            </li>
+            
+        </ul>
+
+        <div class="flex-grow-1"></div>
+
+        <a href="#" class="dk-docs-nav__search d-none d-md-flex align-items-center" data-bs-toggle="modal" data-bs-target="#mkdocs_search_modal" title="Open search">
+            <i class="bi bi-search"></i>
+            <span>Search docs</span>
+            <span class="dk-docs-nav__search-key">/</span>
+        </a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse flex-grow-0" id="navbarText">
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0 dk-docs-nav__projects dk-docs-nav__projects--collapsed d-lg-none">
+                
+                <li class="">
+                    <a href="https://docs.dotkernel.org/api-documentation/">API</a>
+                </li>
+                
+                <li class="">
+                    <a href="https://docs.dotkernel.org/admin-documentation/">Admin</a>
+                </li>
+                
+                <li class="">
+                    <a href="https://docs.dotkernel.org/frontend-documentation/">Frontend</a>
+                </li>
+                
+                <li class="">
+                    <a href="https://docs.dotkernel.org/light-documentation/">Light</a>
+                </li>
+                
+                <li class="">
+                    <a href="https://docs.dotkernel.org/queue-documentation/">Queue</a>
+                </li>
+                
+                <li class="dk-docs-nav__projects-item--active">
+                    <a href="https://docs.dotkernel.org/packages/">Packages</a>
+                </li>
+                
+                <li class="">
+                    <a href="https://docs.dotkernel.org/development/">Development</a>
+                </li>
+                
+                <li class="">
+                    <a href="https://docs.dotkernel.org/headless-documentation/">Headless Platform</a>
+                </li>
+                
+                <li class="">
+                    <a href="https://docs.dotkernel.org/dotboost/">Dotboost</a>
+                </li>
+                
+            </ul>
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link fw-bold text-white" href="https://github.com/dotkernel/dot-dependency-injection" title="Go to dot-dependency-injection repository" target="_blank">
+                        <i class="bi bi-github"></i>
+                        GitHub
+                    </a>
+                </li>
+                <li class="nav-item">
+                    
+    
+    <div class="version-selector">
+        <div class="btn-group">
+            <button type="button" class="btn dropdown-toggle bg-light" data-bs-toggle="dropdown" data-bs-display="static" aria-haspopup="true" aria-expanded="false" id="version-selector-dropdown">
+                
+                    v2
+                
+            </button>
+            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="version-selector-dropdown">
+                
+                
+                <a href="../overview/" class="dropdown-item active">
+                    
+                        v2 (latest)
+                    
+                </a>
+                
+                
+                
+                <a href="../../v1/overview/" class="dropdown-item">
+                    
+                        v1
+                    
+                </a>
+                
+                
+            </div>
+        </div>
+    </div>
+    
+
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+        
+        <div class="container-fluid docs-shell">
+            <div class="row gx-0">
+                <div class="col-lg-3 col-xl-2 right_sidebar">
+                    
+                    
+    <div class="subnavigation hidden-print">
+<!--        <h4 class="subnavigation__title">-->
+<!--            <a href="../..">dot-dependency-injection</a>-->
+<!--        </h4>-->
+
+        <h5 class="subnavigation__title">Table of Contents</h5>
+
+        <ul class="subnavigation__list">
+            
+
+                
+                
+                    
+                        
+<li class="subnavigation__list-item ">
+    <a href="../overview/" class="subnavigation__link">Overview</a>
+</li>
+
+                    
+                        
+<li class="subnavigation__list-item ">
+    <a href="../installation/" class="subnavigation__link">Installation</a>
+</li>
+
+                    
+                        
+<li class="subnavigation__list-item ">
+    <a href="../configuration/" class="subnavigation__link">Configuration</a>
+</li>
+
+                    
+                        
+<li class="subnavigation__list-item ">
+    <a href="../usage/" class="subnavigation__link">Usage</a>
+</li>
+
+                    
+                        
+<li class="subnavigation__list-item subnavigation__list-item--active">
+    <a href="./" class="subnavigation__link">FAQ</a>
+</li>
+
+                    
+                        
+<li class="subnavigation__list-item ">
+    <a href="../attributes-vs-factories/" class="subnavigation__link">Attributes vs. factories</a>
+</li>
+
+                    
+                        
+<li class="subnavigation__list-item ">
+    <a href="../factories/" class="subnavigation__link">Factories</a>
+</li>
+
+                    
+                        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li class="subnavigation__list-item">
+    <a data-bs-toggle="collapse" href="#reference" role="button" class="collapsed" aria-expanded="false" aria-controls="reference">
+        <span class="subnavigation__headline">Reference</span>
+    </a>
+    <ul class="subnavigation__list collapse" id="reference">
+        
+        
+<li class="subnavigation__list-item ">
+    <a href="../factories/service/" class="subnavigation__link">Inject class dependencies</a>
+</li>
+
+        
+        
+<li class="subnavigation__list-item ">
+    <a href="../factories/repository/" class="subnavigation__link">Inject entity repositories</a>
+</li>
+
+        
+    </ul>
+</li>
+
+                    
+                        
+<li class="subnavigation__list-item ">
+    <a href="../upgrading/" class="subnavigation__link">Upgrading from 1.x</a>
+</li>
+
+                    
+                
+            
+
+                
+                
+
+                    
+                    
+                
+            
+        </ul>
+    </div>
+
+                    
+                </div>
+                <div class="col-lg-9 col-xl-8 main_docs">
+                    
+                    <nav aria-label="breadcrumb" class="nav_breadcrumb">
+    <ol class="breadcrumb">
+        
+            <li class="breadcrumb-item"><a href="https://docs.dotkernel.org/">Overview</a></li>
+            
+
+            
+                <li class="breadcrumb-item"><a href="../..">dot-dependency-injection</a></li>
+
+                
+                    
+                        
+                        
+                    
+                
+
+                <li class="breadcrumb-item active" aria-current="page">FAQ</li>
+            
+        
+    </ol>
+</nav>
+
+                    
+                    
+
+
+
+
+    
+    
+
+    
+    
+        
+        
+            
+        
+        
+        <div class="md-actions-bar">
+            <div class="md-actions">
+                <button type="button" class="md-actions-toggle" aria-haspopup="true" aria-expanded="false"
+                        onclick="toggleMdActionsMenu(this)">
+                    <span class="md-actions-toggle-label">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h9l7 7v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/><path d="M13 4v6h6"/></svg>
+                        <span>Copy Page</span>
+                    </span>
+                    <span class="md-actions-toggle-chev">
+                        <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+                    </span>
+                </button>
+                <div class="md-actions-menu" role="menu">
+                    <button type="button" class="md-actions-item" role="menuitem" data-copy-url="../faq.md"
+                            onclick="copyMarkdownPage(this)">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>
+                        <span class="label">Copy Page (as Markdown)</span>
+                    </button>
+                    <a href="../faq.md" target="_blank" rel="alternate noopener noreferrer" type="text/markdown"
+                       class="md-actions-item" role="menuitem" title="View the Markdown source of this page">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h9l7 7v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/><path d="M13 4v6h6"/><path d="M8 15h8M8 11h4"/></svg>
+                        <span class="label">View as Markdown</span>
+                    </a>
+                    <a href="https://claude.ai/new?q=Read%20from%20https%3A//docs.dotkernel.org/dot-dependency-injection/v2/faq.md%20so%20I%20can%20ask%20questions%20about%20it." target="_blank" rel="noopener noreferrer"
+                       class="md-actions-item" role="menuitem" title="Open this page in Claude">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l2.5 5.5L20 11l-5.5 2.5L12 19l-2.5-5.5L4 11l5.5-2.5z"/></svg>
+                        <span class="label">Open in Claude</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    
+
+    <h1 id="faq">FAQ</h1>
+<h2 id="setup-and-registration">Setup and registration</h2>
+<h3 id="do-i-still-have-to-register-every-service-in-a-configprovider">Do I still have to register every service in a ConfigProvider?</h3>
+<p>Yes.
+This package replaces the factory class you would write for a service, not the <code>dependencies.factories</code> entry that tells the container which factory to use.
+Each service still needs one line mapping its FQCN to <code>AttributedServiceFactory</code> or <code>AttributedRepositoryFactory</code>.</p>
+<h3 id="why-does-it-not-read-the-dependencies-from-my-constructor-type-hints">Why does it not read the dependencies from my constructor type hints?</h3>
+<p>Container identifiers are not types.
+The same type can be registered several times under different names, plenty of services are registered under strings such as <code>config</code>, and a parameter typed against an interface gives no indication of which implementation you want.
+<code>#[Inject]</code> asks you for the identifier because that is the only thing the container can actually resolve.</p>
+<h3 id="can-i-register-a-service-under-a-name-other-than-its-fully-qualified-class-name">Can I register a service under a name other than its fully qualified class name?</h3>
+<p>Not directly, because the factory instantiates the requested service name.
+Register the service under its FQCN and add an alias pointing to it if you need a shorter name.</p>
+<h3 id="can-i-keep-some-hand-written-factories">Can I keep some hand-written factories?</h3>
+<p>Yes, the factory is chosen per service, so both styles can live side by side in the same module.
+See <a href="../attributes-vs-factories/">Attributes vs. factories</a> for the cases where a hand-written factory is still the better choice.</p>
+<h2 id="the-inject-attribute">The <code>#[Inject]</code> attribute</h2>
+<h3 id="my-constructor-takes-no-arguments-do-i-need-the-attribute">My constructor takes no arguments, do I need the attribute?</h3>
+<p>It depends on whether the constructor exists at all.
+A class with no constructor is instantiated directly and needs no attribute.
+A class that explicitly declares <code>public function __construct()</code> does need the attribute, otherwise you get <code>You need to use the "...\Inject" attribute on the "..." class</code>.
+Use <code>#[Inject()]</code> with no parameters, or delete the empty constructor.</p>
+<h3 id="what-happens-if-the-order-in-the-attribute-does-not-match-the-constructor">What happens if the order in the attribute does not match the constructor?</h3>
+<p>The order is not checked, only the number of entries is, and the arguments are passed positionally in the order you listed them.
+If the types differ you get a <code>TypeError</code> when the service is created; if they happen to be compatible, the wrong values are injected silently.
+Keep the attribute parameters in the same order as the constructor parameters.</p>
+<h3 id="can-i-leave-out-some-constructor-parameters">Can I leave out some constructor parameters?</h3>
+<p>Only trailing ones that have a default value.
+Arguments are passed positionally, so you cannot skip a parameter in the middle of the list and you cannot inject by parameter name.</p>
+<h3 id="what-if-i-list-more-or-fewer-dependencies-than-the-constructor-takes">What if I list more or fewer dependencies than the constructor takes?</h3>
+<p>The factory throws a <code>Dot\DependencyInjection\Exception\RuntimeException</code> before resolving anything, naming the class, the number of entries and the number of parameters the constructor accepts.
+A variadic last parameter accepts any number of extra entries.</p>
+<h3 id="why-do-i-get-is-not-registered-in-the-container-and-can-not-be-instantiated-without-arguments">Why do I get "is not registered in the container and can not be instantiated without arguments"?</h3>
+<p>A dependency named in <code>#[Inject]</code> is an existing class, but it is not registered in the container and the factory cannot build it with <code>new</code> alone: its constructor has required parameters, it is abstract or an enum, or its constructor is not public.
+Register the dependency in your container, for example with <code>AttributedServiceFactory</code> and its own <code>#[Inject]</code>.</p>
+<h3 id="can-i-inject-a-plain-value-such-as-a-string-or-a-number">Can I inject a plain value, such as a string or a number?</h3>
+<p>No.
+Every parameter of the attribute is resolved as a container identifier, a class name, or a dot-separated path into an array service.
+Put the literal in your configuration and inject it with dot notation instead.</p>
+<h3 id="is-inject-inherited-by-subclasses">Is <code>#[Inject]</code> inherited by subclasses?</h3>
+<p>Yes.
+If a subclass does not declare its own constructor, the factory reads the attribute from the inherited constructor and builds the subclass with the dependencies the parent declared.
+Declare a constructor with its own <code>#[Inject]</code> in the subclass to change them.</p>
+<h3 id="can-i-put-inject-on-a-property-or-a-setter">Can I put <code>#[Inject]</code> on a property or a setter?</h3>
+<p>No.
+The attribute targets methods, and only the constructor is inspected.</p>
+<h3 id="can-i-inject-the-same-service-twice">Can I inject the same service twice?</h3>
+<p>Yes, list it as many times as your constructor needs it.
+A shared service is resolved from the container each time, so both parameters receive the same instance.</p>
+<h2 id="configuration-values">Configuration values</h2>
+<h3 id="how-do-i-inject-a-single-configuration-key">How do I inject a single configuration key?</h3>
+<p>Use dot notation: <code>#[Inject('config.example')]</code> injects <code>$container-&gt;get('config')['example']</code>.
+Paths of any depth work, and both arrays and <code>ArrayAccess</code> objects can be traversed.</p>
+<h3 id="what-if-a-service-is-registered-under-a-name-that-contains-dots">What if a service is registered under a name that contains dots?</h3>
+<p>The full name is always looked up in the container first, so a service literally registered as <code>config.example</code> wins over the <code>example</code> key of the <code>config</code> service.</p>
+<h3 id="what-if-the-key-has-a-stray-dot-such-as-config-or-configdebug">What if the key has a stray dot, such as <code>config.</code> or <code>config..debug</code>?</h3>
+<p><code>Dot\DependencyInjection\Exception\InvalidArgumentException</code> is thrown, because an empty segment is almost always a typo.
+A service registered under that exact name still wins, since the full name is looked up first.</p>
+<h3 id="can-i-address-a-configuration-key-that-itself-contains-a-dot">Can I address a configuration key that itself contains a dot?</h3>
+<p>No.
+Only the segment before the first dot is treated as a service identifier; every following dot starts a new array key, so a key named <code>my.key</code> cannot be reached.
+Nest the value one level deeper, or expose it as its own service.</p>
+<h3 id="what-if-the-configuration-value-is-null">What if the configuration value is <code>null</code>?</h3>
+<p>It is injected as <code>null</code>.
+A key that exists but holds <code>null</code> is not treated as missing.</p>
+<h3 id="what-if-the-key-does-not-exist">What if the key does not exist?</h3>
+<p><code>Dot\DependencyInjection\Exception\InvalidArgumentException</code> is thrown, naming the full path you declared.
+You get the same exception when the path continues past a scalar value, for example <code>config.debug.verbose</code> where <code>config.debug</code> is a boolean.</p>
+<h2 id="doctrine-repositories">Doctrine repositories</h2>
+<h3 id="why-do-i-get-a-repository-of-the-wrong-class-or-an-unexpected-repository-error">Why do I get a repository of the wrong class, or an "unexpected repository" error?</h3>
+<p>Doctrine, not this package, decides which class to instantiate, and it reads that from the mapping of the entity.
+Add <code>#[ORM\Entity(repositoryClass: ExampleRepository::class)]</code> to the entity, so that it points back to the repository that declares it through <code>#[Entity]</code>.</p>
+<h3 id="do-i-still-need-entity-if-the-entity-already-declares-repositoryclass">Do I still need <code>#[Entity]</code> if the entity already declares <code>repositoryClass</code>?</h3>
+<p>Yes.
+The two point at each other: <code>repositoryClass</code> tells Doctrine which class to build, and <code>#[Entity]</code> tells the factory which entity to ask for.</p>
+<h3 id="can-i-inject-extra-dependencies-into-a-repository">Can I inject extra dependencies into a repository?</h3>
+<p>No.
+The repository is constructed by Doctrine with the entity manager and the class metadata, so its constructor signature is not yours to change.
+Put the extra dependencies in a service that receives the repository through <code>#[Inject]</code>.</p>
+<h3 id="how-do-i-inject-a-repository-into-a-service">How do I inject a repository into a service?</h3>
+<p>Register the repository with <code>AttributedRepositoryFactory</code>, then list it like any other service: <code>#[Inject(ExampleRepository::class)]</code>.</p>
+<h3 id="do-i-need-doctrineorm-if-i-only-use-attributedservicefactory">Do I need <code>doctrine/orm</code> if I only use <code>AttributedServiceFactory</code>?</h3>
+<p>No.
+Install it yourself (<code>composer require doctrine/orm</code>) only if you use <code>AttributedRepositoryFactory</code>.
+If Composer asks to move it from <code>require-dev</code> to <code>require</code>, see <a href="../installation/#composer-asks-to-move-the-orm-requirement">Composer asks to move the ORM requirement</a>.</p>
+<h3 id="is-entity-inherited-by-a-subclass-of-my-repository">Is <code>#[Entity]</code> inherited by a subclass of my repository?</h3>
+<p>No.
+PHP does not pass attributes down to subclasses, so each repository registered with <code>AttributedRepositoryFactory</code> needs its own <code>#[Entity]</code>.</p>
+<h2 id="performance">Performance</h2>
+<h3 id="is-the-attribute-lookup-cached">Is the attribute lookup cached?</h3>
+<p>No.
+One <code>ReflectionClass</code> is created per service creation and the attribute is read every time.
+The container's own instance cache still applies, so a shared service is built once per request no matter how many classes inject it.</p>
+<h3 id="does-that-slow-down-my-application">Does that slow down my application?</h3>
+<p>The reflection happens once per service that a request actually builds, and it is a lookup on an already-loaded class rather than file parsing.
+If a profile ever shows it mattering for a specific hot service, write a factory by hand for that one service.</p>
+<h2 id="testing-and-debugging">Testing and debugging</h2>
+<h3 id="how-do-i-unit-test-a-class-that-uses-inject">How do I unit test a class that uses <code>#[Inject]</code>?</h3>
+<p>Exactly as you would test any other class: instantiate it with <code>new</code> and pass test doubles.
+The attribute is inert outside the factory, so it has no effect on your tests.</p>
+<h3 id="i-get-you-need-to-use-the-attribute-on-the-class-what-now">I get "You need to use the ... attribute on the ... class", what now?</h3>
+<p>The requested class has a constructor without the <code>#[Inject]</code> attribute, or the attribute sits somewhere other than the constructor.
+Check that the attribute is imported from <code>Dot\DependencyInjection\Attribute\Inject</code>, because an attribute of another <code>Inject</code> class is ignored.</p>
+<h3 id="are-circular-dependencies-detected">Are circular dependencies detected?</h3>
+<p>Only direct self-injection, which throws a <code>RuntimeException</code>.
+A cycle spanning several classes, where <code>A</code> needs <code>B</code> and <code>B</code> needs <code>A</code>, is not detected and ends in infinite recursion, exactly as it would with hand-written factories.</p>
+<h3 id="which-exception-should-i-catch">Which exception should I catch?</h3>
+<p>Both exceptions of this package implement <code>Dot\DependencyInjection\Exception\ExceptionInterface</code>, so a single <code>catch</code> covers every wiring error.
+Note that your container may wrap them; for example, Laminas Service Manager wraps them in <code>Laminas\ServiceManager\Exception\ServiceNotCreatedException</code>, so inspect the previous exception.</p>
+
+
+
+
+    <nav>
+    <ul class="list-unstyled page-nav row w-100 mt-5 mb-3 pt-5 pb-3">
+        
+        <li class="col text-nowrap text-md-start">
+            
+                <a rel="prev" class="page-nav__link page-nav__link--prev" href="../usage/">
+                    <i class="bi bi-chevron-left"></i>
+                    Usage
+                </a>
+            
+        </li>
+
+        
+        <li class="col text-nowrap text-md-end pe-0">
+            
+                <a rel="next" class="page-nav__link page-nav__link--next" href="../attributes-vs-factories/">
+                    Attributes vs. factories
+                    <i class="bi bi-chevron-right"></i>
+                </a>
+            
+        </li>
+    </ul>
+</nav>
+
+
+
+                    
+                </div>
+
+                
+                
+                <div class="col-xl-2 d-none d-xl-block page_toc">
+                    
+    
+
+    
+    
+        <div class="toc">
+            <h6 class="toc__headline">On this page</h6>
+            <ul class="toc__list">
+            
+                <li class="toc__entry">
+                    <a href="#setup-and-registration" class="toc__link nav-link">Setup and registration</a>
+                </li>
+            
+                <li class="toc__entry">
+                    <a href="#the-inject-attribute" class="toc__link nav-link">The #[Inject] attribute</a>
+                </li>
+            
+                <li class="toc__entry">
+                    <a href="#configuration-values" class="toc__link nav-link">Configuration values</a>
+                </li>
+            
+                <li class="toc__entry">
+                    <a href="#doctrine-repositories" class="toc__link nav-link">Doctrine repositories</a>
+                </li>
+            
+                <li class="toc__entry">
+                    <a href="#performance" class="toc__link nav-link">Performance</a>
+                </li>
+            
+                <li class="toc__entry">
+                    <a href="#testing-and-debugging" class="toc__link nav-link">Testing and debugging</a>
+                </li>
+            
+            </ul>
+        </div>
+    
+
+                </div>
+                
+            </div>
+        </div>
+
+        
+        <footer class="dk-home-footer">
+    <div class="dk-home-footer__grid">
+        <div class="dk-home-footer__col">
+            <div class="dk-home-footer__label">Products</div>
+            <a href="https://docs.dotkernel.org/api-documentation/">API</a>
+            <a href="https://docs.dotkernel.org/admin-documentation/">Admin</a>
+            <a href="https://docs.dotkernel.org/queue-documentation/">Queue</a>
+            <a href="https://docs.dotkernel.org/light-documentation/">Light</a>
+        </div>
+        <div class="dk-home-footer__col">
+            <div class="dk-home-footer__label">Resources</div>
+            <a href="https://docs.dotkernel.org/dotboost/">Dotboost</a>
+            <a href="https://docs.dotkernel.org/headless-documentation/">Architecture</a>
+            <a href="https://www.dotkernel.com/dotkernel-packages-oss-lifecycle/">Packages Lifecycle</a>
+            <a href="https://docs.dotkernel.org/development/">WSL2 Dev Stack</a>
+        </div>
+        <div class="dk-home-footer__col">
+            <div class="dk-home-footer__label">More</div>
+            <a href="https://www.dotkernel.com/">Categories</a>
+            <a href="https://www.dotkernel.com/blog/">Blog</a>
+            <a href="https://github.com/orgs/dotkernel/discussions">Discussion</a>
+            <a href="https://www.dotkernel.com/about/">About</a>
+            <a href="https://www.dotkernel.com/contact/">Contact us</a>
+        </div>
+        <div class="dk-home-footer__col">
+            <div class="dk-home-footer__label">Follow</div>
+            <a href="https://github.com/dotkernel" target="_blank">GitHub</a>
+            <a href="https://www.dotkernel.com/feed/" target="_blank">Dotkernel RSS Feed</a>
+            <div class="dk-home-footer__note">Open-source tooling supported by JetBrains.</div>
+        </div>
+    </div>
+
+    <div class="dk-home-footer__bottom">
+        <img src="https://docs.dotkernel.org/img/dk_logo_2024_white.svg" alt="Dotkernel Logo" width="112" height="21" style="opacity:.75" />
+        <div class="dk-home-footer__tagline">Built with Mezzio, Laminas &amp; Doctrine - for PHP developers, by PHP developers. The Laminas logo is copyright of the Laminas Foundation.</div>
+        <div class="flex-grow-1"></div>
+        <div class="dk-home-footer__copyright">&#169; Copyright Dotkernel <span id="current-year"></span>. All rights reserved.</div>
+    </div>
+</footer>
+
+        <script>
+            let base_url = '../..',
+                project  = "packages",
+                siteName = 'dot-dependency-injection';
+        </script>
+        
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Search</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form role="form">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Search in dot-dependency-injection" id="mkdocs-search-query">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results"></div>
+            </div>
+        </div>
+    </div>
+</div>
+    </body>
+</html>

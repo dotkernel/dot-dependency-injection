@@ -13,9 +13,22 @@
         
             
         
-        <meta name="docsearch:version" content="1.0.0,latest">
+        <meta name="docsearch:version" content="2.0.0,latest">
         <meta name="docsearch:language" content="en">
         <meta name="docsearch:component" content="dot-dependency-injection">
+
+        <meta property="og:title"        content="Dotkernel Documentation"/>
+        <meta property="og:description"  content="Official Dotkernel documentation covering APIs, Admin, Queue, developer tools, packages, and modern PHP application development"/>
+        <meta property="og:image"        content="https://docs.dotkernel.org/img/open-graph/twitter-card-docs.png"/>
+        <meta property="og:type"         content="website"/>
+        <meta property="og:site_name"    content="Dotkernel Documentation"/>
+        <meta property="og:url"          content="https://docs.dotkernel.org/"/>
+        <meta property="og:locale"       content="en_US"/>
+        <meta name="twitter:card"        content="summary_large_image"/>
+        <meta name="twitter:site"        content="@dotkernel"/>
+        <meta name="twitter:title"       content="Dotkernel Documentation"/>
+        <meta name="twitter:description" content="Official Dotkernel documentation covering APIs, Admin, Queue, developer tools, packages, and modern PHP application development"/>
+        <meta name="twitter:image"       content="https://docs.dotkernel.org/img/open-graph/twitter-card-docs.png"/>
 
         
         <link rel="canonical" href="https://docs.dotkernel.org/dot-dependency-injection/">
@@ -23,10 +36,6 @@
         <link rel="shortcut icon" href="https://docs.dotkernel.org/img/dk_docs_favicon_white.svg">
 
         <title>dot-dependency-injection - Dotkernel Documentation</title>
-
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=Source+Sans+3:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 
         <link rel="stylesheet" href="https://docs.dotkernel.org/css/bootstrap.css">
         <link rel="stylesheet" href="https://docs.dotkernel.org/css/bootstrap-icons.min.css">
@@ -147,6 +156,35 @@
                 <li class="nav-item">
                     
     
+    <div class="version-selector">
+        <div class="btn-group">
+            <button type="button" class="btn dropdown-toggle bg-light" data-bs-toggle="dropdown" data-bs-display="static" aria-haspopup="true" aria-expanded="false" id="version-selector-dropdown">
+                
+                    v2
+                
+            </button>
+            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="version-selector-dropdown">
+                
+                
+                <a href="v2/overview/" class="dropdown-item">
+                    
+                        v2 (latest)
+                    
+                </a>
+                
+                
+                
+                <a href="v1/overview/" class="dropdown-item">
+                    
+                        v1
+                    
+                </a>
+                
+                
+            </div>
+        </div>
+    </div>
+    
 
                 </li>
             </ul>
@@ -175,43 +213,43 @@
                     
                         
 <li class="subnavigation__list-item ">
-    <a href="v1/overview/" class="subnavigation__link">Overview</a>
+    <a href="v2/overview/" class="subnavigation__link">Overview</a>
 </li>
 
                     
                         
 <li class="subnavigation__list-item ">
-    <a href="v1/installation/" class="subnavigation__link">Installation</a>
+    <a href="v2/installation/" class="subnavigation__link">Installation</a>
 </li>
 
                     
                         
 <li class="subnavigation__list-item ">
-    <a href="v1/configuration/" class="subnavigation__link">Configuration</a>
+    <a href="v2/configuration/" class="subnavigation__link">Configuration</a>
 </li>
 
                     
                         
 <li class="subnavigation__list-item ">
-    <a href="v1/usage/" class="subnavigation__link">Usage</a>
+    <a href="v2/usage/" class="subnavigation__link">Usage</a>
 </li>
 
                     
                         
 <li class="subnavigation__list-item ">
-    <a href="v1/faq/" class="subnavigation__link">FAQ</a>
+    <a href="v2/faq/" class="subnavigation__link">FAQ</a>
 </li>
 
                     
                         
 <li class="subnavigation__list-item ">
-    <a href="v1/attributes-vs-factories/" class="subnavigation__link">Attributes vs. factories</a>
+    <a href="v2/attributes-vs-factories/" class="subnavigation__link">Attributes vs. factories</a>
 </li>
 
                     
                         
 <li class="subnavigation__list-item ">
-    <a href="v1/factories/" class="subnavigation__link">Factories</a>
+    <a href="v2/factories/" class="subnavigation__link">Factories</a>
 </li>
 
                     
@@ -238,26 +276,40 @@
 
 
 <li class="subnavigation__list-item">
-    <a data-bs-toggle="collapse" href="#reference" role="button" aria-expanded="false" aria-controls="reference">
+    <a data-bs-toggle="collapse" href="#reference" role="button" class="collapsed" aria-expanded="false" aria-controls="reference">
         <span class="subnavigation__headline">Reference</span>
     </a>
     <ul class="subnavigation__list collapse" id="reference">
         
         
 <li class="subnavigation__list-item ">
-    <a href="v1/factories/service/" class="subnavigation__link">Inject class dependencies</a>
+    <a href="v2/factories/service/" class="subnavigation__link">Inject class dependencies</a>
 </li>
 
         
         
 <li class="subnavigation__list-item ">
-    <a href="v1/factories/repository/" class="subnavigation__link">Inject entity repositories</a>
+    <a href="v2/factories/repository/" class="subnavigation__link">Inject entity repositories</a>
 </li>
 
         
     </ul>
 </li>
 
+                    
+                        
+<li class="subnavigation__list-item ">
+    <a href="v2/upgrading/" class="subnavigation__link">Upgrading from 1.x</a>
+</li>
+
+                    
+                
+            
+
+                
+                
+
+                    
                     
                 
             
@@ -316,7 +368,7 @@
         
         <li class="col text-nowrap text-md-end pe-0">
             
-                <a rel="next" class="page-nav__link page-nav__link--next" href="v1/overview/">
+                <a rel="next" class="page-nav__link page-nav__link--next" href="v2/overview/">
                     Overview
                     <i class="bi bi-chevron-right"></i>
                 </a>
@@ -369,8 +421,8 @@
     </div>
 
     <div class="dk-home-footer__bottom">
-        <img src="https://docs.dotkernel.org/img/dk_logo_2024_white.svg" alt="Dotkernel" width="112" height="21" style="opacity:.75" />
-        <div class="dk-home-footer__tagline">Built with Mezzio, Laminas &amp; Doctrine &mdash; for PHP developers, by PHP developers. The Laminas logo is copyright of the Laminas Foundation.</div>
+        <img src="https://docs.dotkernel.org/img/dk_logo_2024_white.svg" alt="Dotkernel Logo" width="112" height="21" style="opacity:.75" />
+        <div class="dk-home-footer__tagline">Built with Mezzio, Laminas &amp; Doctrine - for PHP developers, by PHP developers. The Laminas logo is copyright of the Laminas Foundation.</div>
         <div class="flex-grow-1"></div>
         <div class="dk-home-footer__copyright">&#169; Copyright Dotkernel <span id="current-year"></span>. All rights reserved.</div>
     </div>
@@ -380,14 +432,6 @@
             let base_url = '.',
                 project  = "packages",
                 siteName = 'dot-dependency-injection';
-
-                document.addEventListener("DOMContentLoaded", function() {
-                    document.querySelectorAll('.subnavigation__link').forEach(function(link) {
-                        if (link.getAttribute('href') === './') {
-                            link.parentNode.parentNode.classList.add('show');
-                        }
-                    });
-                });
         </script>
         
         <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
@@ -413,5 +457,5 @@
 
 <!--
 MkDocs version : 1.6.1
-Build Date UTC : 2026-09-16 13:28:07.385280+00:00
+Build Date UTC : 2026-11-26 14:52:19.430564+00:00
 -->
