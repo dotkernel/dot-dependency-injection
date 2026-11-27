@@ -24,7 +24,7 @@ Continue with [Attributes vs. factories](attributes-vs-factories.md) for the com
 [![GitHub stars](https://img.shields.io/github/stars/dotkernel/dot-dependency-injection)](https://github.com/dotkernel/dot-dependency-injection/stargazers)
 [![GitHub license](https://img.shields.io/github/license/dotkernel/dot-dependency-injection)](https://github.com/dotkernel/dot-dependency-injection/blob/1.0/LICENSE.md)
 
-[![Build Static](https://github.com/dotkernel/dot-dependency-injection/actions/workflows/continuous-integration.yml/badge.svg?branch=1.0)](https://github.com/dotkernel/dot-dependency-injection/actions/workflows/continuous-integration.yml)
+[![Build Static](https://github.com/dotkernel/dot-dependency-injection/actions/workflows/continuous-integration.yml/badge.svg?branch=1.x)](https://github.com/dotkernel/dot-dependency-injection/actions/workflows/continuous-integration.yml)
 [![codecov](https://codecov.io/gh/dotkernel/dot-dependency-injection/graph/badge.svg?token=DayAoD2Oj6)](https://codecov.io/gh/dotkernel/dot-dependency-injection)
 [![docs-build](https://github.com/dotkernel/dot-dependency-injection/actions/workflows/docs-build.yml/badge.svg)](https://github.com/dotkernel/dot-dependency-injection/actions/workflows/docs-build.yml)
-[![PHPStan](https://github.com/dotkernel/dot-dependency-injection/actions/workflows/static-analysis.yml/badge.svg?branch=1.0)](https://github.com/dotkernel/dot-dependency-injection/actions/workflows/static-analysis.yml)
+[![PHPStan](https://github.com/dotkernel/dot-dependency-injection/actions/workflows/static-analysis.yml/badge.svg?branch=1.x)](https://github.com/dotkernel/dot-dependency-injection/actions/workflows/static-analysis.yml)
