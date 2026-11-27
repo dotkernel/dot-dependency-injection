@@ -30,7 +30,7 @@ class AttributedRepositoryFactoryTest extends TestCase
      */
     public function testWillThrowExceptionIfClassNotFound(): void
     {
-        $container = $this->createMock(ContainerInterface::class);
+        $container = $this->createStub(ContainerInterface::class);
 
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage(
@@ -47,7 +47,7 @@ class AttributedRepositoryFactoryTest extends TestCase
      */
     public function testWillThrowExceptionIfRepositoryDoesNotExtendEntityRepository(): void
     {
-        $container = $this->createMock(ContainerInterface::class);
+        $container = $this->createStub(ContainerInterface::class);
 
         $subject = new class {
         };
@@ -67,8 +67,8 @@ class AttributedRepositoryFactoryTest extends TestCase
      */
     public function testWillThrowExceptionIfAttributeNotFound(): void
     {
-        $container     = $this->createMock(ContainerInterface::class);
-        $entityManager = $this->createMock(EntityManagerInterface::class);
+        $container     = $this->createStub(ContainerInterface::class);
+        $entityManager = $this->createStub(EntityManagerInterface::class);
 
         $entity   = new class {
         };
@@ -125,7 +125,7 @@ class AttributedRepositoryFactoryTest extends TestCase
      */
     public function testWillThrowExceptionIfEntityClassNotFound(): void
     {
-        $container = $this->createMock(ContainerInterface::class);
+        $container = $this->createStub(ContainerInterface::class);
 
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage(
